@@ -1,41 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
 
-// Данная запись через function устарела, сейчас принято записывать через стрелочные функции
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+// Можно ли записывать несколько компонентов в одном файле? Что происходит при добавлении одного компонента в другой? Где отображается react приложение?
+// Можно
+// Вначале вызовется функция render, которая начнёт отрисовывать компонент App, во время отрисовки, когда встретится другой компонент, будет вызвана его функция и тот JSX код, который был возвращен, будет подставлен заместо тега компонента
+// Приложение react отображается в блоке div с id="root"
 
-// const App = () => {
-//   return (
-//     <>
-//       <h1>Работает</h1>
-//     </>
-//   )
-// }
-
-// Также можно записывать return без скобок(но тогда первый элемент должен быть на уровне return)
 const App = () => {
-  return <div>
-    <h1>Это тоже Работает</h1>
-  </div>
+  return (
+    <>
+      <Header />
+      <Footer />
+    </>
+  )
 }
+
+const Header = () => {
+  return (
+    <>
+        <h1>Это заголовок</h1>
+        <ul>
+          <li>item1</li>
+          <li>item2</li>
+          <li>item3</li>
+          <li>item4</li>
+        </ul>
+    </>
+  )
+}
+
+const Footer = () => {
+  return (
+    <div>
+      <br />
+      <br />
+      <h1>Это Footer</h1>
+    </div>
+  )
+}
+
 
 export default App;
