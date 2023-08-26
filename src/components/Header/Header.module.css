@@ -1,0 +1,17 @@
+.header {
+    padding: 10px;
+    grid-area: header;
+    align-self: center;
+
+
+    background-color: #E8EAED;
+}
+
+.logo__link {
+    display: block;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+}

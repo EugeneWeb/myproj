@@ -1,0 +1,21 @@
+.post:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+.post {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.img__wrap {
+    flex: 10% 1 1;
+}
+
+
+.text {
+    flex: 90% 1 1;
+
+    font-size: 16px;
+    line-height: 24px;
+}

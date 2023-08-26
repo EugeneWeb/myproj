@@ -1,0 +1,41 @@
+.title {
+    margin-bottom:10px;
+
+    font-weight: normal;
+}
+
+#addNews {
+    margin-bottom: 15px;
+}
+#addNews textarea {
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+
+    font-size: 16px;
+
+    background-color: #E8EAED;
+
+    resize: none;
+}
+#addNews textarea:focus {
+    outline: 1px solid #919191;
+}
+
+.addNews__btn {
+    display: flex;
+    justify-content: flex-end;
+}
+.addNews__btn button {
+    padding: 5px 10px;
+
+    font-size: 16px;
+    background-color: #f0f0f0;
+}
+.addNews__btn button:hover {
+   background-color: #d6d6d6;;
+}
+.addNews__btn button:active {
+   background-color: #c7c7c7;;
+}
