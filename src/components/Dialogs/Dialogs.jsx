@@ -7,11 +7,11 @@ const Dialogs = (props) => {
     return (
         <div className={s.dialogs}>
             <ul className={s.dialogs__items}>
-                {props.dialogs.map(dialog => <DialogsItem id={dialog.id}  name={dialog.name}/>)}
+                {props.dialogsPage.dialogs.map((dialog, index) => <DialogsItem key={index} id={dialog.id}  name={dialog.name} path={dialog.path}/>)}
             </ul>
 
             <ul className={s.messages}>
-                {props.messages.map(message => <Message message={message.text} />)}
+                {props.dialogsPage.messages.map((message, index) => <Message key={index} message={message.text} />)}
             </ul>
         </div>
     )

@@ -38,7 +38,7 @@ dd {
     grid-template-areas: "header header"
                          "navbar content";
     grid-template-rows: 120px 1fr;
-    grid-template-columns: 2fr 10fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 10fr);
     gap: 20px;
 
     width: 100%;

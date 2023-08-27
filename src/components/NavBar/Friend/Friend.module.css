@@ -1,0 +1,21 @@
+.friend {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    flex-basis: 0;
+}
+.img__wrap {
+    width: 50px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.name {
+    width: 70px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+}
