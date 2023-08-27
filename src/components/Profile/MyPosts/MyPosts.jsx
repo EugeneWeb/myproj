@@ -1,11 +1,7 @@
 import s from './MyPosts.module.css'
 import Post from './Post/Post'
 
-const images = [
-    { path: './img/avatars/avatar1.svg', text: 'Далеко-далеко, за словесными горами в стране гласных и согласных живут рыбные тексты. Всемогущая инициал даль великий свой однажды образ злых власти снова встретил залетают. Грамматики составитель, единственное вопрос несколько они текста его.', likesCount: 25},
-    { path: './img/avatars/avatar1.svg', text: 'Далеко-далеко, за словесными горами в стране гласных и согласных живут рыбные тексты. Всемогущая инициал даль великий свой', likesCount: 101},
-]
-const MyPosts = () => {
+const MyPosts = (props) => {
     return (
         <div>
             <h2 className={s.title}>Мои посты</h2>
@@ -18,7 +14,7 @@ const MyPosts = () => {
             </form>
 
             <ul className="posts">
-                {images.map((img, index) => <Post key={index} path={`${img.path}`} text={img.text} likesCount={img.likesCount}/>)}
+                {props.images.map((img, index) => <Post key={index} path={`${img.path}`} text={img.text} likesCount={img.likesCount}/>)}
             </ul>
         </div>
     )
