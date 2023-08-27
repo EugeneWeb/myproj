@@ -1,0 +1,12 @@
+.dialogsitem:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.dialog__link {
+    color: black;
+}
+
+.active {
+    font-weight: bold;
+    font-size: 17px;
+}

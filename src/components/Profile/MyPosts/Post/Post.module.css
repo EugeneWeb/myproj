@@ -3,6 +3,8 @@
 }
 
 .post {
+    position: relative;
+
     display: flex;
     align-items: center;
     gap: 20px;
@@ -18,4 +20,23 @@
 
     font-size: 16px;
     line-height: 24px;
+}
+
+.likes {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 18px;
+}
+.likes__icon {
+    width: 30px;
+    height: 30px;
+}
+.likes__icon img:active {
+    background-color: #969696;
 }
