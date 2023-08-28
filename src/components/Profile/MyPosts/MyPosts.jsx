@@ -8,12 +8,9 @@ import Post from './Post/Post'
 const MyPosts = (props) => {
     const newPostText = React.createRef()
 
-    // Так как мы итак имеем данные из textarea в state.js, то просто при вызове addPost берём уже переданные данные из state
-    // Также в addPost делаем очистку input после добавления поста
     const handleOnClick = () => {
-        // const postText = newPostText.current.value
-        // props.addPost(postText)
-        props.addPost()
+
+        props.dispatch({type: 'ADD-POST'})
     }
     const handleOnSubmit = (e) => {
         e.preventDefault()
@@ -21,7 +18,7 @@ const MyPosts = (props) => {
 
     const handleOnChange = (e) => {
         const postText = newPostText.current.value
-        props.setNewPostText(postText)
+        props.dispatch({type: 'SET-NEW-POST-TEXT', newPostText: postText})
     }
 
 

@@ -81,27 +81,33 @@ const store = {
         }
     },
     setNewPostText(newPostMessage) {
-        this._state.profilePage.newPostText = newPostMessage
-    
-        this._subscriber(this)
-    },
-    addPost() {
-        const newPost = {
-            path: "./img/avatars/avatar1.svg",
-            text: this._state.profilePage.newPostText,
-            likesCount: 25,
-        }
-    
-        this._state.profilePage.posts.push(newPost)
-    
-        this._state.profilePage.newPostText = ''
-        this._subscriber(this)
+        
     },
     getState() {
         return this._state
     },
     subscribe(observer)  {
         this._subscriber = observer
+    },
+    dispatch(action) {
+        debugger
+        if(action.type === 'ADD-POST') {
+            const newPost = {
+                path: "./img/avatars/avatar1.svg",
+                text: this._state.profilePage.newPostText,
+                likesCount: 25,
+            }
+        
+            this._state.profilePage.posts.push(newPost)
+        
+            this._state.profilePage.newPostText = ''
+            this._subscriber(this)
+        }
+        else if(action.type === 'SET-NEW-POST-TEXT') {
+            this._state.profilePage.newPostText = action.newPostText
+    
+            this._subscriber(this)
+        }
     }
 }
 
