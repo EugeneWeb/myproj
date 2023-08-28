@@ -1,4 +1,7 @@
-import rerenderEntireTree from "../render";
+// Ставим заглушку в виде функции
+let rerenderEntireTree = () => {
+    console.log('State Changed')
+}
 
 const addPost = () => {
     const newPost = {
@@ -73,7 +76,16 @@ const state = {
     }
 };
 
+//Таким образом мы будем принимать функцию rerenderEntireTree из index.js без использования циклического импорта
+// Будем получать rerenderEntireTree из index.js и записывать в нашу переменную rerenderEntireTree
+// observer - наблюдатель
+// Данный шаблон проектирования называется наблюдатель
+// Теперь нам нужно просто передать в index.js эту функцию и вызвать её там
+const subscribe = (observer) => {
+    rerenderEntireTree = observer
+}
 
 
-export { addPost, updateNewPostText }
+
+export { addPost, updateNewPostText, subscribe }
 export default state;
