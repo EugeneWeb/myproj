@@ -1,3 +1,25 @@
+import rerenderEntireTree from "../render";
+
+const addPost = () => {
+    const newPost = {
+        path: "./img/avatars/avatar1.svg",
+        text: state.profilePage.newPostText,
+        likesCount: 25,
+    }
+
+    // Нарушаем принцип чистой функции функционального программирования
+    state.profilePage.posts.push(newPost)
+
+    state.profilePage.newPostText = ''
+    rerenderEntireTree(state)
+}
+const updateNewPostText = (newPostMessage) => {
+    // Нарушаем принцип чистой функции функционального программирования
+    state.profilePage.newPostText = newPostMessage
+
+    rerenderEntireTree(state)
+}
+
 const state = {
     dialogsPage: {
         dialogs: [
@@ -23,7 +45,7 @@ const state = {
         ],
     },
     profilePage: {
-        images: [
+        posts: [
             {
                 path: "./img/avatars/avatar1.svg",
                 text: "Далеко-далеко, за словесными горами в стране гласных и согласных живут рыбные тексты. Всемогущая инициал даль великий свой однажды образ злых власти снова встретил залетают. Грамматики составитель, единственное вопрос несколько они текста его.",
@@ -35,6 +57,9 @@ const state = {
                 likesCount: 101,
             },
         ],
+        newPostText: 'Text',
+        updateNewPostText,
+        addPost
     },
     navBarPage: {
         friends: [
@@ -48,4 +73,7 @@ const state = {
     }
 };
 
+
+
+export { addPost, updateNewPostText }
 export default state;
