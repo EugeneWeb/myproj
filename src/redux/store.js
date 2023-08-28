@@ -1,30 +1,5 @@
-// Т.е тперь мы инкапсулируем всю написанную нами логику в объекте store
-// Упрощенный объект store:
-// const store = {
-//     _subscriber: () => {
-//         console.log('No subscribers(observers)')
-//     },
-//     _state: {
-//         firstname: '',
-//         lastname: ''
-//     },
-//     subscribe(observer) {
-//         this._subscriber = observer
-//     },
-//     getState() {
-//         return this._state
-//     },
-//     setFirstName(value) {
-//         this._state.firstname = value
-//     }
-// }
-// _subscriber - это наша функция rerenderEntireTree, которая по умолчанию имеет заглушку(здесь это protected метод, который используется внутри store)
-// protected свойство _state представляет собой хранилище данных(как наш state)
-// getState() - геттер для protected поля state
-// setFirstName(value) - сеттер для поля firstname
-// Метод subscribe аналогичен нашему методу subscribe
-
-
+const ADD_POST = 'ADD-POST'
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 
 const store = {
     _subscriber() {
@@ -90,8 +65,7 @@ const store = {
         this._subscriber = observer
     },
     dispatch(action) {
-        debugger
-        if(action.type === 'ADD-POST') {
+        if(action.type === ADD_POST) {
             const newPost = {
                 path: "./img/avatars/avatar1.svg",
                 text: this._state.profilePage.newPostText,
@@ -103,7 +77,7 @@ const store = {
             this._state.profilePage.newPostText = ''
             this._subscriber(this)
         }
-        else if(action.type === 'SET-NEW-POST-TEXT') {
+        else if(action.type === UPDATE_NEW_POST_TEXT) {
             this._state.profilePage.newPostText = action.newPostText
     
             this._subscriber(this)
@@ -111,8 +85,13 @@ const store = {
     }
 }
 
-// Дебаг
-// window.store = store
+export const addPostActionCreator = () => ({
+    type: ADD_POST
+})
+export const updateNewPostTextActionCreator = (text) => ({
+    type: UPDATE_NEW_POST_TEXT,
+    newPostText: text
+})
 
 
 export default store;

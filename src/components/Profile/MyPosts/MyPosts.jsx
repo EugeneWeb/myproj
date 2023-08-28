@@ -1,6 +1,7 @@
 import React from 'react'
 import s from './MyPosts.module.css'
 import Post from './Post/Post'
+import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/store'
 
 
 // Не забываем убрать стандартное поведение формы, в данном случае нам не нужна перезагрузка страницы
@@ -10,7 +11,7 @@ const MyPosts = (props) => {
 
     const handleOnClick = () => {
 
-        props.dispatch({type: 'ADD-POST'})
+        props.dispatch(addPostActionCreator())
     }
     const handleOnSubmit = (e) => {
         e.preventDefault()
@@ -18,7 +19,7 @@ const MyPosts = (props) => {
 
     const handleOnChange = (e) => {
         const postText = newPostText.current.value
-        props.dispatch({type: 'SET-NEW-POST-TEXT', newPostText: postText})
+        props.dispatch(updateNewPostTextActionCreator(postText))
     }
 
 
