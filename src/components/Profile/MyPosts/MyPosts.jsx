@@ -6,8 +6,6 @@ import Post from './Post/Post'
 // Не забываем убрать стандартное поведение формы, в данном случае нам не нужна перезагрузка страницы
 // Добавляем value, чтобы запретить вводить в textarea и обрабатываем каждый добавленный символ(чтобы он сначала по FLUX архитектуре добавлялся в state, а потом возвращался в UI)
 const MyPosts = (props) => {
-
- 
     const newPostText = React.createRef()
 
     // Так как мы итак имеем данные из textarea в state.js, то просто при вызове addPost берём уже переданные данные из state
@@ -23,7 +21,7 @@ const MyPosts = (props) => {
 
     const handleOnChange = (e) => {
         const postText = newPostText.current.value
-        props.updateNewPostText(postText)
+        props.setNewPostText(postText)
     }
 
 
