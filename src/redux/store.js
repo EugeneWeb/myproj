@@ -1,5 +1,8 @@
 const ADD_POST = 'ADD-POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
+const SEND_MESSAGE = 'SEND-MESSAGE'
+const UPDATE_NEW_MESSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY'
+
 
 const store = {
     _subscriber() {
@@ -28,6 +31,7 @@ const store = {
                     text: "Далеко-далеко за словесными горами, в стране гласных и согласных живут рыбные тексты. Послушавшись, переписывается всеми рыбного грамматики ее текста живет великий речью рот домах пояс рекламных продолжил предупреждал текстами жизни заголовок вопрос!",
                 },
             ],
+            newMessageBody: 'Введите новое сообщение...'
         },
         profilePage: {
             posts: [
@@ -82,6 +86,22 @@ const store = {
     
             this._subscriber(this)
         }
+        else if(action.type === SEND_MESSAGE) {
+            const newMessage = {
+                id: 4,
+                text: this._state.dialogsPage.newMessageBody
+            }
+        
+            this._state.dialogsPage.messages.push(newMessage)
+            this._state.dialogsPage.newMessageBody = ''
+
+            this._subscriber(this)
+        }
+        else if(action.type === UPDATE_NEW_MESSAGE_BODY) {
+            this._state.dialogsPage.newMessageBody = action.newMessageBody
+    
+            this._subscriber(this)
+        }
     }
 }
 
@@ -93,5 +113,12 @@ export const updateNewPostTextActionCreator = (text) => ({
     newPostText: text
 })
 
+export const sendMessageCreator = () => ({
+    type: SEND_MESSAGE
+})
+export const updateNewMessageBodyCreator = (body) => ({
+    type: UPDATE_NEW_MESSAGE_BODY,
+    newMessageBody: body
+})
 
 export default store;

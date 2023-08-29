@@ -4,11 +4,21 @@ import DialogsItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
 
 import sendIcon from "./icons/send_icon.svg";
+import { sendMessageCreator, updateNewMessageBodyCreator } from "../../redux/store";
 
 const Dialogs = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
     };
+
+    const handleMessageBodyChange = (e) => {
+        const body = updateNewMessageBodyCreator(e.target.value)
+        props.dispatch(body)
+    };
+
+    const handleSendMessage = () => {
+        props.dispatch(sendMessageCreator())
+    }
 
     return (
         <div className={s.dialogs}>
@@ -31,8 +41,8 @@ const Dialogs = (props) => {
                 </ul>
 
                 <form onSubmit={handleSubmit} id={s.messageForm}>
-                    <textarea className={s.message__input}></textarea>
-                    <button type="submit" className={s.message__btn}>
+                    <textarea value={props.dialogsPage.newMessageBody} onChange={handleMessageBodyChange} className={s.message__input}></textarea>
+                    <button onClick={handleSendMessage} type="submit" className={s.message__btn}>
                         <img src={sendIcon} alt="Иконка отправить" />
                     </button>
                 </form>
