@@ -1,7 +1,7 @@
-const ADD_POST = 'ADD-POST'
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
-const SEND_MESSAGE = 'SEND-MESSAGE'
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY'
+import profileReducer from "./profile-reducer";
+import dialogsReducer from "./dialogs-reducer";
+import navbarReducer from "./navbar-reducer";
+
 
 
 const store = {
@@ -59,9 +59,6 @@ const store = {
             ]
         }
     },
-    setNewPostText(newPostMessage) {
-        
-    },
     getState() {
         return this._state
     },
@@ -69,56 +66,15 @@ const store = {
         this._subscriber = observer
     },
     dispatch(action) {
-        if(action.type === ADD_POST) {
-            const newPost = {
-                path: "./img/avatars/avatar1.svg",
-                text: this._state.profilePage.newPostText,
-                likesCount: 25,
-            }
+        this._state.profilePage = profileReducer(action, this._state.profilePage)
+        this._state.dialogsPage = dialogsReducer(action, this._state.dialogsPage)
+        this._state.navBarPage = navbarReducer(action, this._state.navBarPage)
         
-            this._state.profilePage.posts.push(newPost)
-        
-            this._state.profilePage.newPostText = ''
-            this._subscriber(this)
-        }
-        else if(action.type === UPDATE_NEW_POST_TEXT) {
-            this._state.profilePage.newPostText = action.newPostText
-    
-            this._subscriber(this)
-        }
-        else if(action.type === SEND_MESSAGE) {
-            const newMessage = {
-                id: 4,
-                text: this._state.dialogsPage.newMessageBody
-            }
-        
-            this._state.dialogsPage.messages.push(newMessage)
-            this._state.dialogsPage.newMessageBody = ''
-
-            this._subscriber(this)
-        }
-        else if(action.type === UPDATE_NEW_MESSAGE_BODY) {
-            this._state.dialogsPage.newMessageBody = action.newMessageBody
-    
-            this._subscriber(this)
-        }
+        this._subscriber(this)
     }
 }
 
-export const addPostActionCreator = () => ({
-    type: ADD_POST
-})
-export const updateNewPostTextActionCreator = (text) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    newPostText: text
-})
 
-export const sendMessageCreator = () => ({
-    type: SEND_MESSAGE
-})
-export const updateNewMessageBodyCreator = (body) => ({
-    type: UPDATE_NEW_MESSAGE_BODY,
-    newMessageBody: body
-})
+
 
 export default store;

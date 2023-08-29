@@ -4,7 +4,7 @@ import DialogsItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
 
 import sendIcon from "./icons/send_icon.svg";
-import { sendMessageCreator, updateNewMessageBodyCreator } from "../../redux/store";
+import { sendMessageCreator, updateNewMessageBodyCreator } from '../../redux/dialogs-reducer';
 
 const Dialogs = (props) => {
     const handleSubmit = (e) => {
