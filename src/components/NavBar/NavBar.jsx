@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import s from "./NavBar.module.css";
 import Friend from "./Friend/Friend";
+import StoreContext from "../../StoreContext";
 
 const NavBar = (props) => {
     return (
@@ -70,18 +71,26 @@ const NavBar = (props) => {
                 </ul>
             </nav>
 
-            <div className={s.friends}>
-                <h3 className={s.friends__title}>Друзья</h3>
-                <div className={s.friends__items}>
-                    {props.navBarPage.friends.map((friend, index) => (
-                        <Friend
-                            key={index}
-                            name={friend.name}
-                            path={friend.path}
-                        />
-                    ))}
-                </div>
-            </div>
+            <StoreContext.Consumer>
+                {(store) => {
+                    return (
+                        <div className={s.friends}>
+                            <h3 className={s.friends__title}>Друзья</h3>
+                            <div className={s.friends__items}>
+                                {store.getState().navBarPage.friends.map(
+                                    (friend, index) => (
+                                        <Friend
+                                            key={index}
+                                            name={friend.name}
+                                            path={friend.path}
+                                        />
+                                    )
+                                )}
+                            </div>
+                        </div>
+                    );
+                }}
+            </StoreContext.Consumer>
         </aside>
     );
 };
