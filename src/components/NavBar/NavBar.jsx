@@ -1,26 +1,71 @@
-import { NavLink } from 'react-router-dom'
-import s from './NavBar.module.css'
-import Friend from './Friend/Friend'
-    
+import { NavLink } from "react-router-dom";
+import s from "./NavBar.module.css";
+import Friend from "./Friend/Friend";
+
 const NavBar = (props) => {
     return (
         <aside className={s.navbar}>
             <nav className={s.navigation}>
                 <ul>
                     <li className={s.navigation__item}>
-                        <NavLink to="/profile" className={({ isActive }) => isActive ? `${s.active} ${s.navigation__link}` : s.navigation__link}>Профиль</NavLink>
+                        <NavLink
+                            to="/profile"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${s.active} ${s.navigation__link}`
+                                    : s.navigation__link
+                            }
+                        >
+                            Профиль
+                        </NavLink>
                     </li>
                     <li className={s.navigation__item}>
-                        <NavLink to="/messages" className={({ isActive }) => isActive ? `${s.active} ${s.navigation__link}` : s.navigation__link}>Сообщения</NavLink>
+                        <NavLink
+                            to="/messages"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${s.active} ${s.navigation__link}`
+                                    : s.navigation__link
+                            }
+                        >
+                            Сообщения
+                        </NavLink>
                     </li>
                     <li className={s.navigation__item}>
-                        <NavLink to="/news" className={({ isActive }) => isActive ? `${s.active} ${s.navigation__link}` : s.navigation__link}>Новости</NavLink>
+                        <NavLink
+                            to="/news"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${s.active} ${s.navigation__link}`
+                                    : s.navigation__link
+                            }
+                        >
+                            Новости
+                        </NavLink>
                     </li>
                     <li className={s.navigation__item}>
-                        <NavLink to="/music" className={({ isActive }) => isActive ? `${s.active} ${s.navigation__link}` : s.navigation__link}>Музыка</NavLink>
+                        <NavLink
+                            to="/music"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${s.active} ${s.navigation__link}`
+                                    : s.navigation__link
+                            }
+                        >
+                            Музыка
+                        </NavLink>
                     </li>
                     <li className={s.navigation__item}>
-                        <NavLink to="/settings" className={({ isActive }) => isActive ? `${s.active} ${s.navigation__link}` : s.navigation__link}>Настройки</NavLink>
+                        <NavLink
+                            to="/settings"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${s.active} ${s.navigation__link}`
+                                    : s.navigation__link
+                            }
+                        >
+                            Настройки
+                        </NavLink>
                     </li>
                 </ul>
             </nav>
@@ -28,11 +73,17 @@ const NavBar = (props) => {
             <div className={s.friends}>
                 <h3 className={s.friends__title}>Друзья</h3>
                 <div className={s.friends__items}>
-                    {props.navBarPage.friends.map((friend, index) => <Friend key={index} name={friend.name} path={friend.path} />) }
+                    {props.navBarPage.friends.map((friend, index) => (
+                        <Friend
+                            key={index}
+                            name={friend.name}
+                            path={friend.path}
+                        />
+                    ))}
                 </div>
             </div>
         </aside>
-    )
-}
+    );
+};
 
-export default NavBar
+export default NavBar;

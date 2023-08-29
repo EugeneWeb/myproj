@@ -1,17 +1,13 @@
 import React from 'react'
 import s from './MyPosts.module.css'
 import Post from './Post/Post'
-import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/profile-reducer'
 
 
-// Не забываем убрать стандартное поведение формы, в данном случае нам не нужна перезагрузка страницы
-// Добавляем value, чтобы запретить вводить в textarea и обрабатываем каждый добавленный символ(чтобы он сначала по FLUX архитектуре добавлялся в state, а потом возвращался в UI)
 const MyPosts = (props) => {
     const newPostText = React.createRef()
 
     const handleOnClick = () => {
-
-        props.dispatch(addPostActionCreator())
+        props.addPost()
     }
     const handleOnSubmit = (e) => {
         e.preventDefault()
@@ -19,9 +15,8 @@ const MyPosts = (props) => {
 
     const handleOnChange = (e) => {
         const postText = newPostText.current.value
-        props.dispatch(updateNewPostTextActionCreator(postText))
+        props.updateNewPostText(postText)
     }
-
 
     return (
         <div>

@@ -4,7 +4,6 @@ import DialogsItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
 
 import sendIcon from "./icons/send_icon.svg";
-import { sendMessageCreator, updateNewMessageBodyCreator } from '../../redux/dialogs-reducer';
 
 const Dialogs = (props) => {
     const handleSubmit = (e) => {
@@ -12,18 +11,17 @@ const Dialogs = (props) => {
     };
 
     const handleMessageBodyChange = (e) => {
-        const body = updateNewMessageBodyCreator(e.target.value)
-        props.dispatch(body)
+        props.updateNewMessageBody(e.target.value);
     };
 
     const handleSendMessage = () => {
-        props.dispatch(sendMessageCreator())
-    }
+        props.sendMessage();
+    };
 
     return (
         <div className={s.dialogs}>
             <ul className={s.dialogs__items}>
-                {props.dialogsPage.dialogs.map((dialog, index) => (
+                {props.dialogs.map((dialog, index) => (
                     <DialogsItem
                         key={index}
                         id={dialog.id}
@@ -35,14 +33,22 @@ const Dialogs = (props) => {
 
             <div className={s.messages}>
                 <ul className={s.messages__items}>
-                    {props.dialogsPage.messages.map((message, index) => (
+                    {props.messages.map((message, index) => (
                         <Message key={index} message={message.text} />
                     ))}
                 </ul>
 
                 <form onSubmit={handleSubmit} id={s.messageForm}>
-                    <textarea value={props.dialogsPage.newMessageBody} onChange={handleMessageBodyChange} className={s.message__input}></textarea>
-                    <button onClick={handleSendMessage} type="submit" className={s.message__btn}>
+                    <textarea
+                        value={props.newMessageBody}
+                        onChange={handleMessageBodyChange}
+                        className={s.message__input}
+                    ></textarea>
+                    <button
+                        onClick={handleSendMessage}
+                        type="submit"
+                        className={s.message__btn}
+                    >
                         <img src={sendIcon} alt="Иконка отправить" />
                     </button>
                 </form>

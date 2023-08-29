@@ -1,4 +1,4 @@
-import s from './Friend.module.css'
+import s from "./Friend.module.css";
 
 const Friend = (props) => {
     return (
@@ -8,7 +8,7 @@ const Friend = (props) => {
             </div>
             <p className={s.name}>{props.name}</p>
         </div>
-    )
-}
+    );
+};
 
-export default Friend
+export default Friend;
