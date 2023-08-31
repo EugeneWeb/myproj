@@ -31,17 +31,3 @@
     color: #c4a702
 }
 
-.friends__items {
-    display: flex;
-    gap: 5px;
-    padding-bottom: 10px;
-    overflow-x: auto;
-}
-
-.friends__title {
-    margin-bottom: 10px;
-
-    font-weight: normal;
-    font-size: 24px;
-    font-family: sans-serif;
-}

@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import s from "./NavBar.module.css";
-import Friend from "./Friend/Friend";
-import StoreContext from "../../StoreContext";
+// import Friend from "./Friends/Friend/Friend";
+// import StoreContext from "../../StoreContext";
+import FriendsContainer from "./Friends/FriendsContainer";
 
 const NavBar = (props) => {
     return (
@@ -71,7 +72,12 @@ const NavBar = (props) => {
                 </ul>
             </nav>
 
-            <StoreContext.Consumer>
+            {/* Создать тег friends, в который поместить этот код, а friends уже должен принимать в себя через контейнерную компоненту в пропсах массив friends */}
+            
+            <FriendsContainer />
+
+            {/*Старый способ с friend вообще не правильный, нужно было создать контейнерную компоненту
+             <StoreContext.Consumer>
                 {(store) => {
                     return (
                         <div className={s.friends}>
@@ -90,7 +96,7 @@ const NavBar = (props) => {
                         </div>
                     );
                 }}
-            </StoreContext.Consumer>
+            </StoreContext.Consumer> */}
         </aside>
     );
 };
