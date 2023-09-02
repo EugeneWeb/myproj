@@ -44,7 +44,7 @@ const usersReducer = (state = initialState, action) => {
         default:
             return state;
     }
-    // users: [...action.users]
+    // users: [...state.users, ...action.users]
 };
 
 export const followAC = (userId) => ({
