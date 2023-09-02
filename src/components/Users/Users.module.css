@@ -1,0 +1,83 @@
+.users__title {
+    margin-bottom: 20px;
+
+    font-weight: normal;
+    font-family: sans-serif;
+}
+
+.users__items {
+    padding: 10px 30px;
+}
+
+.item:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.item {
+    display: flex;
+    gap: 20px;
+}
+
+.avatar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+    flex: 120px 0 0;
+}
+.img__wrap {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.follow {
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    font-size: 16px;
+
+    background-color: #F0F0F0;
+}
+.follow:hover {
+    background-color: #d1d0d0;
+}
+.follow:active {
+    background-color: #a8a8a8;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 10px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    flex: 600px 0 0;
+    height: 80px;
+}
+
+.info__line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn__wrapper {
+    text-align: center;
+}
+.btn__wrapper button{
+    padding: 10px 15px;
+    border-radius: 10px;
+    
+    font-size: 20px;
+
+    background-color: #F0F0F0;
+}
+.btn__wrapper button:hover {
+    background-color: #d1d0d0;
+}
+.btn__wrapper button:active {
+    background-color: #a8a8a8;
+}

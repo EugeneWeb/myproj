@@ -19,26 +19,24 @@ const initialState = {
 
 const profileReducer = (state = initialState, action) => {
 
-    const stateCopy = {...state}
-
     switch (action.type) {
         case ADD_POST:
             const newPost = {
                 path: "./img/avatars/avatar1.svg",
-                text: stateCopy.newPostText,
+                text: state.newPostText,
                 likesCount: 25,
             }
-            stateCopy.posts = [...stateCopy.posts]
-
-            stateCopy.posts.push(newPost)
-
-        
-            stateCopy.newPostText = ''
-            return stateCopy
+            return {
+                ...state,
+                posts: [...state.posts, newPost],
+                newPostText: ''
+            }
 
         case UPDATE_NEW_POST_TEXT:
-            stateCopy.newPostText = action.newPostText
-            return stateCopy
+            return {
+                ...state,
+                newPostText: action.newPostText
+            }
 
         default:
             return state

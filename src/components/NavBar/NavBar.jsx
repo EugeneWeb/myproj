@@ -59,6 +59,18 @@ const NavBar = (props) => {
                     </li>
                     <li className={s.navigation__item}>
                         <NavLink
+                            to="/users"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${s.active} ${s.navigation__link}`
+                                    : s.navigation__link
+                            }
+                        >
+                            Поиск
+                        </NavLink>
+                    </li>
+                    <li className={s.navigation__item}>
+                        <NavLink
                             to="/settings"
                             className={({ isActive }) =>
                                 isActive
