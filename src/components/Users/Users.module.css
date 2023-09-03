@@ -90,3 +90,7 @@
 .selectedPage {
     background-color: #C5AB12;
 }
+
+.hidden {
+    visibility: hidden;
+}
