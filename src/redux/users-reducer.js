@@ -1,9 +1,14 @@
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET-USERS";
+const SET_USERS_TOTAL_COUNT = "SET-USERS-TOTAL-COUNT"
+const SET_CURRENT_PAGE = "SET-CURRENT-PAGE"
 
 const initialState = {
-    users: []
+    users: [],
+    currentPage: 1,
+    totalCount: 0,
+    perPage: 4
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -40,6 +45,16 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 users: [...action.users]
             }
+        case SET_USERS_TOTAL_COUNT: 
+            return {
+                ...state,
+                totalCount: action.totalCount
+            }
+        case SET_CURRENT_PAGE: 
+            return {
+                ...state,
+                currentPage: action.currentPage
+            }
 
         default:
             return state;
@@ -59,5 +74,13 @@ export const setUsersAC = (users) => ({
     type: SET_USERS,
     users,
 });
+export const setUsersTotalCountAC = (totalCount) => ({
+    type: SET_USERS_TOTAL_COUNT,
+    totalCount
+})
+export const setCurrentPageAC = (currentPage) => ({
+    type: SET_CURRENT_PAGE,
+    currentPage
+})
 
 export default usersReducer;
