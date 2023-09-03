@@ -94,46 +94,46 @@ import React from "react";
 
 class Users extends React.Component {
     componentDidMount() {
-        // axios
-        //      .get('url')
-        //      .then(resp => {
-        //         console.log(resp.data.users)
-        //      })
+        axios
+             .get('http://127.0.0.1:5000/api/users')
+             .then(resp => {
+                this.props.setUsers(resp.data)
+             })
 
-        this.props.setUsers([
-            {
-                id: 1,
-                fullname: "Дмитрий Сорокин",
-                location: { city: "Минск", country: "Беларусь" },
-                status: "Я ищу работу",
-                followed: true,
-                photoUrl: "./img/avatars/avatar1.svg",
-            },
-            {
-                id: 2,
-                fullname: "Дмитрий Сорокин",
-                location: { city: "Минск", country: "Беларусь" },
-                status: "Я ищу работу",
-                followed: false,
-                photoUrl: "./img/avatars/avatar1.svg",
-            },
-            {
-                id: 3,
-                fullname: "Aлександр Сорокин",
-                location: { city: "Минск", country: "Беларусь" },
-                status: "Я ищу работу",
-                followed: true,
-                photoUrl: "./img/avatars/avatar1.svg",
-            },
-            {
-                id: 4,
-                fullname: "Aлександр Сорокин",
-                location: { city: "Минск", country: "Беларусь" },
-                status: "Я ищу работу",
-                followed: true,
-                photoUrl: "./img/avatars/avatar1.svg",
-            },
-        ]);
+        // this.props.setUsers([
+        //     {
+        //         id: 1,
+        //         fullname: "Дмитрий Сорокин",
+        //         location: { city: "Минск", country: "Беларусь" },
+        //         status: "Я ищу работу",
+        //         followed: true,
+        //         photoUrl: "./img/avatars/avatar1.svg",
+        //     },
+        //     {
+        //         id: 2,
+        //         fullname: "Дмитрий Сорокин",
+        //         location: { city: "Минск", country: "Беларусь" },
+        //         status: "Я ищу работу",
+        //         followed: false,
+        //         photoUrl: "./img/avatars/avatar1.svg",
+        //     },
+        //     {
+        //         id: 3,
+        //         fullname: "Aлександр Сорокин",
+        //         location: { city: "Минск", country: "Беларусь" },
+        //         status: "Я ищу работу",
+        //         followed: true,
+        //         photoUrl: "./img/avatars/avatar1.svg",
+        //     },
+        //     {
+        //         id: 4,
+        //         fullname: "Aлександр Сорокин",
+        //         location: { city: "Минск", country: "Беларусь" },
+        //         status: "Я ищу работу",
+        //         followed: true,
+        //         photoUrl: "./img/avatars/avatar1.svg",
+        //     },
+        // ]);
     }
 
     render() {
@@ -143,7 +143,7 @@ class Users extends React.Component {
 
                 <ul className={s.users__items}>
                     {this.props.users.map((user) => (
-                        <li key={user.id} className={s.item}>
+                        <li key={user._id} className={s.item}>
                             <div className={s.avatar}>
                                 <div className={s.img__wrap}>
                                     <img
