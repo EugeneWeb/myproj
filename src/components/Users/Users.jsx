@@ -18,14 +18,14 @@ const Users = (props) => {
                                 </div>
                                 {user.followed ? (
                                     <button
-                                        onClick={() => this.props.follow(user.id)}
+                                        onClick={() => props.follow(user.id)}
                                         className={s.follow}
                                     >
                                         Отписаться
                                     </button>
                                 ) : (
                                     <button
-                                        onClick={() => this.props.unfollow(user.id)}
+                                        onClick={() => props.unfollow(user.id)}
                                         className={s.follow}
                                     >
                                         Подписаться

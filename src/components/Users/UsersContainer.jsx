@@ -1,11 +1,11 @@
 import { connect } from "react-redux";
 import {
-    followAC,
-    setCurrentPageAC,
-    setIsFetchingAC,
-    setUsersAC,
-    setUsersTotalCountAC,
-    unfollowAC,
+    follow,
+    setCurrentPage,
+    setIsFetching,
+    setUsers,
+    setUsersTotalCount,
+    unfollow,
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import axios from "axios";
@@ -82,27 +82,27 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        follow: (userId) => {
-            dispatch(followAC(userId));
-        },
-        unfollow: (userId) => {
-            dispatch(unfollowAC(userId));
-        },
-        setUsers: (users) => {
-            dispatch(setUsersAC(users));
-        },
-        setUsersTotalCount: (totalCount) => {
-            dispatch(setUsersTotalCountAC(totalCount));
-        },
-        setCurrentPage: (currentPage) => {
-            dispatch(setCurrentPageAC(currentPage));
-        },
-        setIsFetching: (isFetching) => {
-            dispatch(setIsFetchingAC(isFetching));
-        },
-    };
-};
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         follow: (userId) => {
+//             dispatch(follow(userId));
+//         },
+//         unfollow: (userId) => {
+//             dispatch(unfollow(userId));
+//         },
+//         setUsers: (users) => {
+//             dispatch(setUsers(users));
+//         },
+//         setUsersTotalCount: (totalCount) => {
+//             dispatch(setUsersTotalCount(totalCount));
+//         },
+//         setCurrentPage: (currentPage) => {
+//             dispatch(setCurrentPage(currentPage));
+//         },
+//         setIsFetching: (isFetching) => {
+//             dispatch(setIsFetching(isFetching));
+//         },
+//     };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(mapStateToProps, {follow, unfollow, setUsers, setUsersTotalCount, setCurrentPage, setIsFetching })(UsersContainer);
