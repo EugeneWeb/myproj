@@ -20,7 +20,7 @@ const MyPosts = (props) => {
 
     return (
         <div>
-            <h2 className={s.title}>Мои посты</h2>
+            <h2 className={s.title}>Посты пользователя</h2>
 
             <form id={s.addNews} onSubmit={handleOnSubmit}>
                 <textarea ref={newPostText} placeholder='Ваша новость...' onChange={handleOnChange} value={props.newPostText}></textarea>

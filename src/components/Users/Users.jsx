@@ -1,5 +1,6 @@
 import s from "./Users.module.css";
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Users = (props) => {
     return (
@@ -11,10 +12,12 @@ const Users = (props) => {
                         <li key={user._id} className={s.item}>
                             <div className={s.avatar}>
                                 <div className={s.img__wrap}>
-                                    <img
-                                        src={user.photoUrl}
-                                        alt={`Фото ${user.fullname}`}
-                                    />
+                                    <NavLink to={`/profile/${user._id}`}>
+                                        <img
+                                            src={user.photoUrl}
+                                            alt={`Фото ${user.fullname}`}
+                                        />
+                                    </NavLink>
                                 </div>
                                 {user.followed ? (
                                     <button

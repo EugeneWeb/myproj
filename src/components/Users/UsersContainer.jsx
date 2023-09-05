@@ -16,6 +16,7 @@ import s from "./UsersContainer.module.css";
 class UsersContainer extends React.Component {
     componentDidMount() {
         this.props.setIsFetching(true);
+        
         axios
             .get(
                 `http://127.0.0.1:5000/api/users/?perPage=${this.props.perPage}&page=${this.props.currentPage}`
