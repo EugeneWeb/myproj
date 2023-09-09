@@ -6,8 +6,6 @@ import Profile from './Profile'
 import { setUsersProfile } from '../../redux/profile-reducer'
 
 class ProfileContainer extends React.Component {
-    
-    isAuth = false
 
     componentDidMount() {
         const userId = this.props.params.userId
@@ -34,7 +32,7 @@ class ProfileContainer extends React.Component {
     }
 
     render() {
-        return <Profile {...this.props} isAuth={this.isAuth} />
+        return <Profile {...this.props} />
     }
 }
 

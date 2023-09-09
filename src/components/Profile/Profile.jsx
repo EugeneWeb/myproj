@@ -6,6 +6,10 @@ import Preloader from '../common/Preloader/Preloader'
 const Profile = (props) => {
     // Если свойства profile нет, то будет загрузка и ожидание ответа от сервера
     
+    if(!props.isAuth) {
+        return <h1>Вы не авторизованы</h1>
+    }
+
     if(!props.profile) {
         return <Preloader />
     }

@@ -20,27 +20,28 @@ import axios from "axios";
 
 import { setUser } from "./redux/authReducer";
 
-// Добавил переход на регистрацию и авторизацию, useNavigate, useDispatch, componentDidUpdate(prevProps) важно про пропсы(отличие от componentDidMount), как сделать ререндеринг компоненты при переходе с /profile/:id на /profile 
+// Добавил follow, unfollow, убрал текущего пользователя из списка пользователей, про правильное использование методов POST, GET, PUT, DELETE, PATCH в axios с headers, данные, которые можно посмотреть в network, credentials(перевод), метод OPTIONS
 
-// useNavigate - хук, который позволяет изменять url страницы без перезагрузки
-// useDispatch - хук react-redux, позволяющий использовать функцию dispatch
+// Теперь мы через authReducer изменяем данные о массиве following в currentUser и отрисовываем всех пользователей
 
-// prevProps - объект с предыдущими значениями пропсов при вызове componentDidUpdate(нужны для того, чтобы не получать бесконечные циклы в componentDidUpdate)
-// componentDidMount не имеет доступа к пропсам, componentDidUpdate- имеет 
+// про правильное использование методов POST, GET, PUT, DELETE, PATCH в axios с headers
+// при добавлении headers в POST, PUT, PATCH нужно добавлять пустой объект с телом, поэтому будет 3 аргумента, с delete и get - 2
 
-// как сделать ререндеринг компоненты при переходе с /profile/:id на /profile
-// componentDidUpdate(prevProps) {
-//     if (this.props.isAuth !== prevProps.isAuth && this.props.isAuth) {
-//         // Только если isAuth изменился с false на true
-//         this.props.setUsersProfile(this.props.currentUser);
-//       }
-      
-//     // Для того, чтобы при переходе с аккаунта другого user'а мы получили нашу страницу на '/profile' мы обновляем данные(т.е при переходе с /profile/skdfjkfd на /profile у нас будет происходить обновление данных)
-//     if (prevProps.params.userId && !this.props.params.userId) {
-//         this.props.setUsersProfile(this.props.currentUser);
-//     }
-// }
+// данные, которые можно посмотреть в network
+// accept(принимаемый тип данных)
+// origin(домен, с которого отправляем запрос)
+// referrer(с какой страницы отправляем запрос)
+// user Agent(браузер)
 
+// Если посмотрим response, то увидим cors(политика безопасности)
+// (access-control-...-...(какой порт) и т.д)
+// cache-contol: no-cache(не кэшируем ответ)
+
+// credentials(реквизиты для входа)
+
+// OPTIONS
+// Перед самим запросом браузер шлёт запрос preflight с методом OPTIONS для того, чтобы узнать о доступе(получает все заголовки)
+// Метод OPTIONS возвращает данные о cors(доступные методы, разрешенные заголовки и т.д)
 
 function App(props) {
     const dispatch = useDispatch();
@@ -72,6 +73,7 @@ function App(props) {
                 <NavBar />
                 <div className={s.content}>
                     <Routes>
+                        <Route path="/" element={<ProfileContainer />} />
                         <Route path="/profile" element={<ProfileContainer />} />
                         <Route
                             path="/profile/:userId"
