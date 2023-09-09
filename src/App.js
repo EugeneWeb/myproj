@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import s from "./App.module.css";
 
-import Header from "./components/Header/Header";
 import NavBar from "./components/NavBar/NavBar";
 
 import News from "./components/News/News";
@@ -12,46 +11,85 @@ import Error from "./components/Error/Error";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
+import RegistrationContainer from "./components/Registration/RegistrationContainer";
+import LoginContainer from "./components/Login/LoginContainer";
+import HeaderContainer from "./components/Header/HeaderContainer";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
-// Добавил переход на страницы пользователей, почему в компоненту НЕ СТОИТ передавать в качестве атрибута props={this.props}, как передать все данные из пропса контейнерной компоненты в презентационную, просмотр данных в буфере обмена VS Code, WithRouter(+решение проблемы router v6), как посмотреть данные о пропсах в консоле, можно ли добавить несколько параметров в Route
+import { setUser } from "./redux/authReducer";
 
-// почему в компоненту НЕ СТОИТ передавать props={this.props}
-// Потому что то, что мы передаём в props попадает в объект props в компоненту, ТО мы получим, что в компоненте будет props, а в нём ещё один props
+// Добавил переход на регистрацию и авторизацию, useNavigate, useDispatch, componentDidUpdate(prevProps) важно про пропсы(отличие от componentDidMount), как сделать ререндеринг компоненты при переходе с /profile/:id на /profile 
 
-// как передать все данные из пропса контейнерной компоненты в презентационную
-// С помощью такого синтаксиса:
-// <PresentationalComp {...this.props}/>
+// useNavigate - хук, который позволяет изменять url страницы без перезагрузки
+// useDispatch - хук react-redux, позволяющий использовать функцию dispatch
 
-// просмотр данных в буфере обмена VS Code
-// по умолчанию нет такой функции, нужно скачать расширение clipboard history
-// для просмотра ctrl + shift + v
+// prevProps - объект с предыдущими значениями пропсов при вызове componentDidUpdate(нужны для того, чтобы не получать бесконечные циклы в componentDidUpdate)
+// componentDidMount не имеет доступа к пропсам, componentDidUpdate- имеет 
 
-// WithRouter - это компонента высшего порядка(HOC(хок) - high order component)
-// С помощью данной функции можно передать данные о местоположении(location), параметрах(params) и др.
-// данная компонента, начиная с router v6 принимает только функции(так как она теперь на хуках)!
-// Для работы с классовыми компонентами можно сымитировать функцию WithRouter, создав свою альтернативу на хуках:
-// альтернатива просто принимает классовую компоненту, оборачивает ёё в функциональную и возвращает функциональную компоненту(та в свою очередь возвращает классовую компоненту вместе с данными, полученными из хуков: useLocation, useNavigate, useParams)
+// как сделать ререндеринг компоненты при переходе с /profile/:id на /profile
+// componentDidUpdate(prevProps) {
+//     if (this.props.isAuth !== prevProps.isAuth && this.props.isAuth) {
+//         // Только если isAuth изменился с false на true
+//         this.props.setUsersProfile(this.props.currentUser);
+//       }
+      
+//     // Для того, чтобы при переходе с аккаунта другого user'а мы получили нашу страницу на '/profile' мы обновляем данные(т.е при переходе с /profile/skdfjkfd на /profile у нас будет происходить обновление данных)
+//     if (prevProps.params.userId && !this.props.params.userId) {
+//         this.props.setUsersProfile(this.props.currentUser);
+//     }
+// }
 
-// как посмотреть данные о пропсах в консоле
-// Для этого используем debugger и в момент отладки пишем в консоле this.props
-
-// можно ли добавить несколько параметров в Route
-// Да, с помощью такого синтаксиса: /:param1/:param2
 
 function App(props) {
+    const dispatch = useDispatch();
+
+    useEffect(() => 
+        async () => {
+            try {
+                const resp = await axios.post(
+                    "http://127.0.0.1:5000/api/user/auth",
+                    {},
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("token"),
+                      },
+                    }
+                  );
+                  
+                dispatch(setUser(resp.data.user));
+            } catch (error) {
+                console.log(error);
+                localStorage.removeItem("token");
+            };
+    }, [dispatch]);
+
     return (
         <Router>
             <div className={s.wrap}>
-                <Header />
+                <HeaderContainer />
                 <NavBar />
                 <div className={s.content}>
                     <Routes>
-                        <Route path="/profile/:userId" element={<ProfileContainer />} />
+                        <Route path="/profile" element={<ProfileContainer />} />
+                        <Route
+                            path="/profile/:userId"
+                            element={<ProfileContainer />}
+                        />
                         <Route path="/news" element={<News />} />
-                        <Route path="/messages/*" element={<DialogsContainer />} />
+                        <Route
+                            path="/messages/*"
+                            element={<DialogsContainer />}
+                        />
                         <Route path="/music" element={<Music />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/users" element={<UsersContainer />} />
+                        <Route path="/login" element={<LoginContainer />} />
+                        <Route
+                            path="/registration"
+                            element={<RegistrationContainer />}
+                        />
 
                         <Route path="*" element={<Error />} />
                     </Routes>

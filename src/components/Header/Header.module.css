@@ -1,7 +1,11 @@
 .header {
-    padding: 10px;
+    padding: 10px 20px;
     grid-area: header;
     align-self: center;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
 
     background-color: #E8EAED;
@@ -14,4 +18,66 @@
 .logo {
     width: 100px;
     height: 100px;
+}
+
+.header__btns {
+    display: flex;
+    gap: 10px;
+    width: 350px;
+    justify-content: space-between;
+}
+.header__btns a{
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+
+    color: #fff;
+}
+
+.login {
+    background-color: #00ACC1;
+}
+.login:hover {
+    background-color: #0195a8;
+}
+.login:active {
+    background-color: #018a9c;
+}
+
+.registration {
+    flex: 1 1;
+    background-color: #C4A702;
+}
+.registration:hover {
+    background-color: #a78e02;
+}
+.registration:active {
+    background-color: #8d7801;
+}
+
+.img__wrap {
+    width: 50px;
+    height: 50px;
+}
+
+.user__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.close {
+    color: red;
+
+    text-decoration: underline;
+    font-size: 16px;
+    font-weight: bold;
+
+    background-color: transparent;
+
+    cursor: pointer;
 }

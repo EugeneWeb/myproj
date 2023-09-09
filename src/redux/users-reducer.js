@@ -66,7 +66,6 @@ const usersReducer = (state = initialState, action) => {
         default:
             return state;
     }
-    // users: [...state.users, ...action.users]
 };
 
 export const follow = (userId) => ({
