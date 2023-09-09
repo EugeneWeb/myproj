@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
 import {setUser} from '../../redux/authReducer'
-import axios from 'axios'
 import Login from './Login'
 import { connect } from 'react-redux'
+import { api } from '../../api/api'
 
 
 class LoginContainer extends Component {
   render() {
     const login = (login, password) => {
-        axios
-             .post('http://127.0.0.1:5000/api/user/login', {login, password})
+        api.login(login, password)
              .then(userAuth => {
-                this.props.setUser(userAuth.data.user)
-                localStorage.setItem('token', userAuth.data.token)
+                this.props.setUser(userAuth.user)
+                localStorage.setItem('token', userAuth.token)
              })
     }
 

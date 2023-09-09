@@ -1,9 +1,9 @@
 import React from 'react'
-import axios from 'axios'
 import WithRouter from '../common/WithRouter/WithRouter'
 import { connect } from 'react-redux'
 import Profile from './Profile'
 import { setUsersProfile } from '../../redux/profile-reducer'
+import { api } from '../../api/api'
 
 class ProfileContainer extends React.Component {
 
@@ -13,10 +13,9 @@ class ProfileContainer extends React.Component {
             return
         }
 
-        axios
-              .get('http://127.0.0.1:5000/api/user/' + userId)
+        api.setProfile(userId)
               .then(resp => {
-                this.props.setUsersProfile(resp.data)
+                this.props.setUsersProfile(resp)
               })
     }
     componentDidUpdate(prevProps) {

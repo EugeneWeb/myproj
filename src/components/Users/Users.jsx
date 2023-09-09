@@ -4,13 +4,13 @@ import { NavLink } from "react-router-dom";
 import axios from 'axios'
 
 const Users = (props) => {
-    
+
     return (
         <div className={`${s.users} ${props.isFetching ? s.hidden : null}`}>
                 <h1 className={s.users__title}>Пользователи</h1>
 
                 <ul className={s.users__items}>
-                    {props.users.filter(user => user._id !== props.currentUser._id).map((user) => (
+                    {props.users.map((user) => (
                         <li key={user._id} className={s.item}>
                             <div className={s.avatar}>
                                 <div className={s.img__wrap}>

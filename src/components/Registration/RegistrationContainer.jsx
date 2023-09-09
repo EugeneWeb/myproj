@@ -1,16 +1,15 @@
 import { connect } from "react-redux";
 import Registration from "./Registration";
 import React from "react";
-import axios from "axios";
 import {setIsRegistered} from './../../redux/authReducer'
+import { api } from "../../api/api";
 
 class RegistrationContainer extends React.Component {
     render() {
         const registration = (username, email, password) => {
             try {
                 this.props.setIsRegistered(false)
-                axios
-                      .post('http://127.0.0.1:5000/api/user/registration', {username, email, password})
+                api.registration(username, email, password)
                       .then(regMsg => {
                         this.props.setIsRegistered(true)
                       })

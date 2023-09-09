@@ -6,29 +6,27 @@ import {
     setUsersTotalCount
 } from "../../redux/users-reducer";
 import Users from "./Users";
-import axios from "axios";
 import React from "react";
 import Preloader from "../common/Preloader/Preloader";
 import s from "./UsersContainer.module.css";
 import {follow, unfollow} from '../../redux/authReducer'
+import { api } from "../../api/api";
 
 class UsersContainer extends React.Component {
     componentDidMount() {
         this.props.setIsFetching(true);
 
-        axios
-            .get(
-                `http://127.0.0.1:5000/api/user/all/?perPage=${this.props.perPage}&page=${this.props.currentPage}`
-            )
+        api.getUsers(this.props.perPage, this.props.currentPage)
             .then((resp) => {
                 this.props.setIsFetching(false);
 
-                this.props.setUsers(resp.data.users);
-                this.props.setUsersTotalCount(resp.data.totalCount);
+                this.props.setUsers(resp.users);
+                this.props.setUsersTotalCount(resp.totalCount);
             });
     }
 
     render() {
+        // Вычитаем одного из totalCount, потому что себя не считаем
         const pagesCount = Math.ceil(
             this.props.totalCount / this.props.perPage
         );
@@ -41,14 +39,11 @@ class UsersContainer extends React.Component {
             this.props.setIsFetching(true);
 
             this.props.setCurrentPage(pageNum);
-            axios
-                .get(
-                    `http://127.0.0.1:5000/api/user/all/?perPage=${this.props.perPage}&page=${pageNum}`
-                )
+            api.getUsers(this.props.perPage, pageNum)
                 .then((resp) => {
                     this.props.setIsFetching(false);
 
-                    this.props.setUsers(resp.data.users);
+                    this.props.setUsers(resp.users);
                 });
         };
 
