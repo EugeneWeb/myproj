@@ -16,7 +16,7 @@ export default function Login(props) {
 
   return (
     <div className={s.login}>
-        {!props.isAuth && <form onSubmit={handleSubmit} className={s.form}>
+        <form onSubmit={handleSubmit} className={s.form}>
                 <legend className={s.form__legend}>Авторизация</legend>
                 <div className={s.form__field}>
                     <input
@@ -39,7 +39,7 @@ export default function Login(props) {
                 <div className={s.form__btn}>
                     <button type="submit">Авторизоваться</button>
                 </div>
-            </form>}
+            </form>
     </div>
   )
 }

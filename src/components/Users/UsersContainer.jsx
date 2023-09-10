@@ -6,17 +6,24 @@ import {
     setUsersTotalCount,
     setFollowingInProgress,
     deleteFollowingInProgress,
-    getUsers
+    getUsers,
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import React from "react";
 import Preloader from "../common/Preloader/Preloader";
 import s from "./UsersContainer.module.css";
-import {followSuccess, unfollowSuccess, follow, unfollow} from '../../redux/authReducer'
+import {
+    followSuccess,
+    unfollowSuccess,
+    follow,
+    unfollow,
+} from "../../redux/authReducer";
+import withAuthRedirect from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-        this.props.getUsers(this.props.perPage, this.props.currentPage)
+        this.props.getUsers(this.props.perPage, this.props.currentPage);
     }
 
     render() {
@@ -30,31 +37,29 @@ class UsersContainer extends React.Component {
         }
 
         const onChangePage = (pageNum) => {
-            this.props.getUsers(this.props.perPage, pageNum)
+            this.props.getUsers(this.props.perPage, pageNum);
         };
 
         return (
             <div className={s.wrap}>
-                {this.props.isAuth ? (
-                    <div>
-                        {this.props.isFetching ? (
-                            <Preloader className={s.preloader} />
-                        ) : null}
-                        <Users
-                            isFetching={this.props.isFetching}
-                            users={this.props.users}
-                            onChangePage={onChangePage}
-                            follow={this.props.follow}
-                            unfollow={this.props.unfollow}
-                            pages={pages}
-                            currentPage={this.props.currentPage}
-                            currentUser={this.props.currentUser}
-                            followingInProgress={this.props.followingInProgress}
-                            setFollowingInProgress={this.props.setFollowingInProgress}
-                            deleteFollowingInProgress={this.props.deleteFollowingInProgress}
-                        />
-                    </div>
-                ) : <h1>Вы не авторизованы</h1>}
+                {this.props.isFetching ? (
+                    <Preloader className={s.preloader} />
+                ) : null}
+                <Users
+                    isFetching={this.props.isFetching}
+                    users={this.props.users}
+                    onChangePage={onChangePage}
+                    follow={this.props.follow}
+                    unfollow={this.props.unfollow}
+                    pages={pages}
+                    currentPage={this.props.currentPage}
+                    currentUser={this.props.currentUser}
+                    followingInProgress={this.props.followingInProgress}
+                    setFollowingInProgress={this.props.setFollowingInProgress}
+                    deleteFollowingInProgress={
+                        this.props.deleteFollowingInProgress
+                    }
+                />
             </div>
         );
     }
@@ -67,22 +72,26 @@ const mapStateToProps = (state) => {
         totalCount: state.usersPage.totalCount,
         perPage: state.usersPage.perPage,
         isFetching: state.usersPage.isFetching,
-        isAuth: state.auth.isAuth,
         currentUser: state.auth.currentUser,
         followingInProgress: state.usersPage.followingInProgress,
     };
 };
 
-export default connect(mapStateToProps, {
-    followSuccess,
-    unfollowSuccess,
-    setUsers,
-    setUsersTotalCount,
-    setCurrentPage,
-    setIsFetching,
-    setFollowingInProgress,
-    deleteFollowingInProgress,
-    getUsers,
-    follow,
-    unfollow
-})(UsersContainer);
+
+
+export default compose(
+    connect(mapStateToProps, {
+        followSuccess,
+        unfollowSuccess,
+        setUsers,
+        setUsersTotalCount,
+        setCurrentPage,
+        setIsFetching,
+        setFollowingInProgress,
+        deleteFollowingInProgress,
+        getUsers,
+        follow,
+        unfollow,
+    }),
+    withAuthRedirect
+)(UsersContainer);

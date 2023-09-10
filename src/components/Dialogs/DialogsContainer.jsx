@@ -5,38 +5,8 @@ import {
     updateNewMessageBodyCreator,
 } from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
-
-// const DialogsContainer = (props) => {
-//     return (
-//         <StoreContext.Consumer>
-//             {(store) => {
-
-//                 const state = store.getState();
-
-//                 const updateNewMessageBody = (body) => {
-//                     store.dispatch(updateNewMessageBodyCreator(body));
-//                 };
-
-//                 const sendMessage = () => {
-//                     store.dispatch(sendMessageCreator());
-//                 };
-
-//                 const dialogs = state.dialogsPage.dialogs;
-//                 const messages = state.dialogsPage.messages;
-//                 const newMessageBody = state.dialogsPage.newMessageBody;
-//                 return (
-//                     <Dialogs
-//                         updateNewMessageBody={updateNewMessageBody}
-//                         sendMessage={sendMessage}
-//                         dialogs={dialogs}
-//                         messages={messages}
-//                         newMessageBody={newMessageBody}
-//                     />
-//                 );
-//             }}
-//         </StoreContext.Consumer>
-//     );
-// };
+import withAuthRedirect from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 const mapStateToProps = (state) => {
     return {
@@ -53,7 +23,11 @@ const mapDispatchToProps = (dispatch) => {
         sendMessage: () => { dispatch(sendMessageCreator()); }
     }
 }
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
 
 
-export default DialogsContainer;
+
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withAuthRedirect
+)(Dialogs);
