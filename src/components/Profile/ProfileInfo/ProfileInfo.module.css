@@ -15,6 +15,7 @@
 }
 
 .user__name {
+    margin-bottom: 15px;
     font-size: 20px;
 }
 
@@ -27,4 +28,6 @@
 .avatar__wrap {
     width: 150px;
 }
+
+
 

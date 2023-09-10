@@ -1,4 +1,5 @@
 import s from './ProfileInfo.module.css'
+import ProfileStatus from './ProfileStatus/ProfileStatus'
 
 const ProfileInfo = (props) => {
     return (
@@ -14,6 +15,8 @@ const ProfileInfo = (props) => {
 
                 <div className={s.user}>
                     <div className={s.user__name}>{props.profile.fullname}</div>
+
+                    <ProfileStatus status={props.profile.status}/>
 
                     <dl>
                         <div className={s.user__item}>
