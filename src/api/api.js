@@ -29,5 +29,20 @@ export const api = {
         return instance
             .post('/registration', {username, email, password})
             .then(resp => resp.data)
+    },
+    auth() {
+        return instance
+            .post("/auth", {})
+            .then(resp => resp.data)
+    },
+    unfollow(userId) {
+        return instance
+            .delete(`/unfollow/${userId}`)
+            .then(resp=>resp.data)
+    },
+    follow(userId) {
+        return instance
+            .post(`/follow/${userId}`, {})
+            .then(resp=>resp.data)
     }
 }

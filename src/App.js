@@ -16,21 +16,14 @@ import LoginContainer from "./components/Login/LoginContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import { api } from "./api/api";
 
 import { setUser } from "./redux/authReducer";
 
+// Добавил отключение кнопки при отправке запроса(для чего?)
 
-// Как обычно происходит взаимодействие между UI BLL DAL, axios.create, пропуск текущего пользователя во вкладке Поиск
-// Обычно UI работает с BLL, а DAL  c BLL
-// В нашем случае мы сделаем работу UI c DAL(который будет общаться с api) и UI с BLL
-// Таким образом мы уберём логику работы с api из UI(классовые компоненты) и перенесём её в  DAL(single responsibility)
-// также не забываем, что в UI данные про api(всё кроме resp.data) не нужно(в нашем случае) 
-
-// С помощью axios.create можно создать instance axios, в который мы поместим baseUrl, headers, тем самым сократив код
-
-// пропуск текущего пользователя во вкладке Поиск
-// Для этого на сервере при find добавляев find({_id: {$ne: req.user.userDetailsId}}) для того, чтобы скипнуть текущего пользователя 
+// Добавил отключение кнопки при отправке запроса(для чего?)
+// может понадобиться в случае плохого соединения пользователя(чтобы пользователь с плохим соединением не мог тыкнуть 10 раз и сломать приложение)
 
 function App(props) {
     const dispatch = useDispatch();
@@ -38,17 +31,10 @@ function App(props) {
     useEffect(() => 
         async () => {
             try {
-                const resp = await axios.post(
-                    "http://127.0.0.1:5000/api/user/auth",
-                    {},
-                    {
-                      headers: {
-                        Authorization: localStorage.getItem("token"),
-                      },
-                    }
-                  );
-                  
-                dispatch(setUser(resp.data.user));
+                
+                const resp = await api.auth();
+                
+                dispatch(setUser(resp.user));
             } catch (error) {
                 console.log(error);
                 localStorage.removeItem("token");

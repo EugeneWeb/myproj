@@ -2,13 +2,16 @@ const SET_USERS = "SET-USERS";
 const SET_USERS_TOTAL_COUNT = "SET-USERS-TOTAL-COUNT"
 const SET_CURRENT_PAGE = "SET-CURRENT-PAGE"
 const SET_ISFETCHING = "SET_ISFETCHING"
+const SET_FOLLOWING_IN_PROGRESS = "SET_FOLLOWING_IN_PROGRESS"
+const DELETE_FOLLOWING_IN_PROGRESS = "DELETE_FOLLOWING_IN_PROGRESS"
 
 const initialState = {
     users: [],
     currentPage: 1,
     totalCount: 0,
     perPage: 4,
-    isFetching: false
+    isFetching: false,
+    followingInProgress:[]
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -33,6 +36,16 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: action.isFetching
             }
+        case SET_FOLLOWING_IN_PROGRESS: 
+            return {
+                ...state,
+                followingInProgress: [...state.followingInProgress, action.userId]
+            }
+        case DELETE_FOLLOWING_IN_PROGRESS: 
+            return {
+                ...state,
+                followingInProgress: state.followingInProgress.filter(id => id !== action.userId)
+            }
 
         default:
             return state;
@@ -54,6 +67,14 @@ export const setCurrentPage = (currentPage) => ({
 export const setIsFetching = (isFetching) => ({
     type: SET_ISFETCHING,
     isFetching
+})
+export const setFollowingInProgress = (userId) => ({
+    type: SET_FOLLOWING_IN_PROGRESS,
+    userId
+})
+export const deleteFollowingInProgress = (userId) => ({
+    type: DELETE_FOLLOWING_IN_PROGRESS,
+    userId
 })
 
 export default usersReducer;

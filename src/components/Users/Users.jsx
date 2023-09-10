@@ -1,7 +1,7 @@
 import s from "./Users.module.css";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import axios from 'axios'
+import { api } from "../../api/api";
 
 const Users = (props) => {
 
@@ -22,14 +22,15 @@ const Users = (props) => {
                                     </NavLink>
                                 </div>
                                 {props.currentUser.following.some(id => id === user._id) ? (
-                                    <button
+                                    <button disabled={props.followingInProgress.some(id => id === user._id)}
                                         onClick={() =>{
-                                            
-                                            axios.delete(`http://127.0.0.1:5000/api/user/unfollow/${user._id}`, {headers: {Authorization:localStorage.getItem('token')}})
+                                            props.setFollowingInProgress(user._id)
+                                            api.unfollow(user._id)
                                                   .then(resp => {
-                                                    
-                                                    if(resp.data.resultCode === 0) {
-                                                        props.follow(user._id)
+                                                    props.deleteFollowingInProgress(user._id)
+
+                                                    if(resp.resultCode === 0) {
+                                                        props.unfollow(user._id)
                                                     }
                                                 })
                                         }}
@@ -38,13 +39,15 @@ const Users = (props) => {
                                         Отписаться
                                     </button>
                                 ) : (
-                                    <button
+                                    <button disabled={props.followingInProgress.some(id => id === user._id)}
                                         onClick={() =>{
-                                            axios.post(`http://127.0.0.1:5000/api/user/follow/${user._id}`, {},{headers: {Authorization:localStorage.getItem('token')}})
+                                            props.setFollowingInProgress(user._id)
+                                            api.follow(user._id)
                                                   .then(resp => {
-                                                    
-                                                    if(resp.data.resultCode === 0) {
-                                                        props.unfollow(user._id)
+                                                    props.deleteFollowingInProgress(user._id)
+
+                                                    if(resp.resultCode === 0) {
+                                                        props.follow(user._id)
                                                     }
                                                 })
                                         }}

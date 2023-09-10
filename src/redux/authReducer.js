@@ -14,12 +14,12 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
     
     switch (action.type) {
-        case UNFOLLOW:
+        case FOLLOW:
             return {
                 ...state,
                 currentUser: {...state.currentUser, following: [...state.currentUser.following, action.userId]}
             };
-        case FOLLOW:
+        case UNFOLLOW:
             return {
                 ...state,
                 currentUser: {...state.currentUser, following: state.currentUser.following.filter(id => id !== action.userId)}

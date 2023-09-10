@@ -3,7 +3,9 @@ import {
     setCurrentPage,
     setIsFetching,
     setUsers,
-    setUsersTotalCount
+    setUsersTotalCount,
+    setFollowingInProgress,
+    deleteFollowingInProgress
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import React from "react";
@@ -63,6 +65,9 @@ class UsersContainer extends React.Component {
                             pages={pages}
                             currentPage={this.props.currentPage}
                             currentUser={this.props.currentUser}
+                            followingInProgress={this.props.followingInProgress}
+                            setFollowingInProgress={this.props.setFollowingInProgress}
+                            deleteFollowingInProgress={this.props.deleteFollowingInProgress}
                         />
                     </div>
                 ) : <h1>Вы не авторизованы</h1>}
@@ -80,6 +85,7 @@ const mapStateToProps = (state) => {
         isFetching: state.usersPage.isFetching,
         isAuth: state.auth.isAuth,
         currentUser: state.auth.currentUser,
+        followingInProgress: state.usersPage.followingInProgress,
     };
 };
 
@@ -90,4 +96,6 @@ export default connect(mapStateToProps, {
     setUsersTotalCount,
     setCurrentPage,
     setIsFetching,
+    setFollowingInProgress,
+    deleteFollowingInProgress
 })(UsersContainer);
