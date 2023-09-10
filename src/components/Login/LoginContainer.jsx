@@ -1,18 +1,13 @@
 import React, { Component } from 'react'
-import {setUser} from '../../redux/authReducer'
 import Login from './Login'
 import { connect } from 'react-redux'
-import { api } from '../../api/api'
+import { loginUser } from '../../redux/authReducer'
 
 
 class LoginContainer extends Component {
   render() {
     const login = (login, password) => {
-        api.login(login, password)
-             .then(userAuth => {
-                this.props.setUser(userAuth.user)
-                localStorage.setItem('token', userAuth.token)
-             })
+      this.props.loginUser(login, password)
     }
 
     return (
@@ -25,5 +20,5 @@ const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth
 })
 
-export default connect(mapStateToProps, {setUser})(LoginContainer)
+export default connect(mapStateToProps, {loginUser})(LoginContainer)
 

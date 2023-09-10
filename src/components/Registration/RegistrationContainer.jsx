@@ -1,18 +1,13 @@
 import { connect } from "react-redux";
 import Registration from "./Registration";
 import React from "react";
-import {setIsRegistered} from './../../redux/authReducer'
-import { api } from "../../api/api";
+import { userRegistration } from "./../../redux/authReducer";
 
 class RegistrationContainer extends React.Component {
     render() {
         const registration = (username, email, password) => {
             try {
-                this.props.setIsRegistered(false)
-                api.registration(username, email, password)
-                      .then(regMsg => {
-                        this.props.setIsRegistered(true)
-                      })
+                this.props.userRegistration(username, email, password)
             } catch (error) {
                 console.log(error)
             }
@@ -26,4 +21,4 @@ const mapStateToProps = (state) => ({
     isRegistered: state.auth.isRegistered
 })
 
-export default connect(mapStateToProps, {setIsRegistered})(RegistrationContainer)
+export default connect(mapStateToProps, {userRegistration})(RegistrationContainer)

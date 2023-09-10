@@ -2,8 +2,8 @@ import React from 'react'
 import WithRouter from '../common/WithRouter/WithRouter'
 import { connect } from 'react-redux'
 import Profile from './Profile'
+import { getProfile } from '../../redux/users-reducer'
 import { setUsersProfile } from '../../redux/profile-reducer'
-import { api } from '../../api/api'
 
 class ProfileContainer extends React.Component {
 
@@ -12,11 +12,7 @@ class ProfileContainer extends React.Component {
         if(!userId) {
             return
         }
-
-        api.setProfile(userId)
-              .then(resp => {
-                this.props.setUsersProfile(resp)
-              })
+        this.props.getProfile(userId)
     }
     componentDidUpdate(prevProps) {
         if (this.props.isAuth !== prevProps.isAuth && this.props.isAuth) {
@@ -44,4 +40,4 @@ const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
 })
 
-export default connect(mapStateToProps, { setUsersProfile })(WithRouterComponent)
+export default connect(mapStateToProps, { getProfile, setUsersProfile })(WithRouterComponent)

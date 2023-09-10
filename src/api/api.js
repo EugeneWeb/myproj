@@ -6,7 +6,7 @@ const instance = axios.create({
 })
 
 
-export const api = {
+export const usersAPI = {
     getUsers(perPage, currentPage) {
         // возвращаем промис, который вернёт resp.data в UI
         return instance
@@ -30,11 +30,6 @@ export const api = {
             .post('/registration', {username, email, password})
             .then(resp => resp.data)
     },
-    auth() {
-        return instance
-            .post("/auth", {})
-            .then(resp => resp.data)
-    },
     unfollow(userId) {
         return instance
             .delete(`/unfollow/${userId}`)
@@ -44,5 +39,13 @@ export const api = {
         return instance
             .post(`/follow/${userId}`, {})
             .then(resp=>resp.data)
+    }
+}
+
+export const authAPI = {
+    me() {
+        return instance
+            .post("/auth", {})
+            .then(resp => resp.data)
     }
 }

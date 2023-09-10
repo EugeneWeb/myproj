@@ -1,7 +1,6 @@
 import s from "./Users.module.css";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { api } from "../../api/api";
 
 const Users = (props) => {
 
@@ -24,15 +23,7 @@ const Users = (props) => {
                                 {props.currentUser.following.some(id => id === user._id) ? (
                                     <button disabled={props.followingInProgress.some(id => id === user._id)}
                                         onClick={() =>{
-                                            props.setFollowingInProgress(user._id)
-                                            api.unfollow(user._id)
-                                                  .then(resp => {
-                                                    props.deleteFollowingInProgress(user._id)
-
-                                                    if(resp.resultCode === 0) {
-                                                        props.unfollow(user._id)
-                                                    }
-                                                })
+                                            props.unfollow(user._id)
                                         }}
                                         className={s.follow}
                                     >
@@ -41,15 +32,7 @@ const Users = (props) => {
                                 ) : (
                                     <button disabled={props.followingInProgress.some(id => id === user._id)}
                                         onClick={() =>{
-                                            props.setFollowingInProgress(user._id)
-                                            api.follow(user._id)
-                                                  .then(resp => {
-                                                    props.deleteFollowingInProgress(user._id)
-
-                                                    if(resp.resultCode === 0) {
-                                                        props.follow(user._id)
-                                                    }
-                                                })
+                                            props.follow(user._id)
                                         }}
                                         className={s.follow}
                                     >
