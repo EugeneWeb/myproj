@@ -16,7 +16,7 @@ const ProfileInfo = (props) => {
                 <div className={s.user}>
                     <div className={s.user__name}>{props.profile.fullname}</div>
 
-                    <ProfileStatus status={props.profile.status}/>
+                    <ProfileStatus status={props.profile.status} getStatus={props.getStatus} />
 
                     <dl>
                         <div className={s.user__item}>

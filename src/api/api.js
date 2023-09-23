@@ -15,11 +15,6 @@ export const usersAPI = {
             )
             .then(resp => resp.data)
     },
-    setProfile(userId) {
-        return instance
-            .get('/' + userId)
-            .then(resp => resp.data)
-    },
     login(login, password) {
         return instance
              .post('/login', {login, password})
@@ -47,5 +42,18 @@ export const authAPI = {
         return instance
             .post("/auth", {})
             .then(resp => resp.data)
+    }
+}
+
+export const profileAPI = {
+    setProfile(userId) {
+        return instance
+            .get('/' + userId)
+            .then(resp => resp.data)
+    },
+    updateStatus(status) {
+        return instance
+                .put('/status', {status})
+                .then(resp => resp.data)
     }
 }

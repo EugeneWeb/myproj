@@ -1,4 +1,4 @@
-import { usersAPI } from "../api/api";
+import { profileAPI, usersAPI } from "../api/api";
 import { setUsersProfile } from "./profile-reducer";
 
 const SET_USERS = "SET-USERS";
@@ -99,9 +99,11 @@ export const getUsers = (perPage, currentPage) => (dispatch) => {
 };
 
 export const getProfile = (userId) => (dispatch) => {
-    usersAPI.setProfile(userId).then((resp) => {
+    profileAPI.setProfile(userId).then((resp) => {
         dispatch(setUsersProfile(resp));
     });
 };
+
+
 
 export default usersReducer;

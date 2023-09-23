@@ -1,4 +1,5 @@
-import { usersAPI } from "../api/api";
+import { authAPI, profileAPI, usersAPI } from "../api/api";
+import { setProfileStatus } from "./profile-reducer";
 import {
     deleteFollowingInProgress,
     setFollowingInProgress,
@@ -9,6 +10,7 @@ const LOGOUT = "LOGOUT";
 const SET_IS_REGISTERED = "SET_REGISTERED";
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
+const SET_STATUS = "SET_STATUS";
 
 const initialState = {
     currentUser: {},
@@ -53,6 +55,14 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isRegistered: action.isRegistered,
+            };
+        case SET_STATUS:
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    status: action.status
+                },
             };
 
         default:
@@ -112,6 +122,31 @@ export const follow = (userId) => (dispatch) => {
 
         if (resp.resultCode === 0) {
             dispatch(followSuccess(userId));
+        }
+    });
+};
+
+export const me = async (dispatch) => {
+    try {
+        const resp = await authAPI.me();
+
+        dispatch(setUser(resp.user));
+    } catch (error) {
+        console.log(error);
+        localStorage.removeItem("token");
+    }
+};
+
+export const setStatus = (status) => ({
+    type: SET_STATUS,
+    status,
+});
+
+export const getStatus = (status) => (dispatch) => {
+    profileAPI.updateStatus(status).then((resp) => {
+        if (resp.user.resultCode === 1) {
+            dispatch(setStatus(status));
+            dispatch(setProfileStatus(status));
         }
     });
 };
