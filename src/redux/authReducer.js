@@ -5,6 +5,7 @@ import {
     deleteFollowingInProgress,
     setFollowingInProgress,
 } from "./users-reducer";
+import { setInitialized } from "./appReducer";
 
 const SET_USER = "SET_USER";
 const LOGOUT = "LOGOUT";
@@ -142,8 +143,10 @@ export const me = async (dispatch) => {
     try {
         const resp = await authAPI.me();
 
-        dispatch(setUser(resp.user));
+        await dispatch(setUser(resp.user));
+        dispatch(setInitialized())
     } catch (error) {
+        dispatch(setInitialized())
         console.log(error);
         localStorage.removeItem("token");
     }

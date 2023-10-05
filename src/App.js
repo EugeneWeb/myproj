@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import s from "./App.module.css";
 
-import NavBar from "./components/NavBar/NavBar";
 
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
@@ -15,57 +14,26 @@ import RegistrationContainer from "./components/Registration/RegistrationContain
 import LoginContainer from "./components/Login/LoginContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 import { me } from "./redux/authReducer";
 import NavBarContainer from "./components/NavBar/NavBarContainer";
+import Preloader from "./components/common/Preloader/Preloader";
 
 
-// Для чего нужен redux-form, подключение redux-form(использование), можно ли обращать напрямую к form, как правильно получать данные из form reducer'а(как правильно называть callback функцию, кот-ую мы будем вешать на onSubmit), что такое field level validation, создание валидаторов(+ добавление), что такое props.children, для чего мы добавили elementtype
+// Проблема при обновлении страницы в браузере нашего приложения, Как добиться правильного app initialization
 
 
 
-// смотреть MyPosts.jsx 
+// Проблема при обновлении страницы в браузере нашего приложения
+// При обновлении страницы, т.к мы не авторизованы, нас сначало redirect'ит в /login далее мы получаем ответ от authAPI.me()(т.е изменяется значение isAuth, что вызывает повторный render компоненты) и после авторизации нас redirect'ит на /profile, ТО при обновлении страницы, независимо от того, где мы располагаемся, нас будет redirect'ить на /profile
 
-// redux-form УСТАРЕЛ!!!
-// redux-form используется для работы со state'ом для всех форм(дело в том, что каждая форма должна иметь input'ы, в которых данные отображаются из state засчет onChange, также каждая форма имеет доп. состояния: по типу было ли тронуто одно из полей формы, если да, то отобразить правильность в веденных данных и т.д) 
-// Т.е redux-form берёт на себя создания onChange, создание поля для хранения введенной информации из input
-
-// Подключение redux-form
-// npm i redux-form --force(т.к redux-form УСТАРЕЛ!!!)
-// Далее добавляем reducer из redux-form в store
-// Для использования redux-form оборачиваем наши формы с помощью 
-// reduxForm({form:"name"})(formComponent)
-// теперь в контейнерную компоненту, кот-я вернулясь после использования reduxForm()() опрокидываем callback handleSubmit, который в качестве аргументов получает все значения формы(оттуда и будем вызывать функции для работы с dispatch/ajax)
-// Также не забываем в common formControls создать свои компоненты для стандартных компонент:Textarea, input для того, чтобы получать данные о состоянии формы и менять стили
-// заменяем input/textarea на Field
-
-// можно ли обращать напрямую к form
-// нет, к redux-form не нужно обращаться напрямую
-
-// как правильно получать данные из form reducer'а(как правильно называть callback функцию, кот-ую мы будем вешать на onSubmit)
-// Получаем данные не напрямую из form, а из функции onSubmit, кот-ую мы передаём в onSubmit в reduxFormComponent, после этого в компоненте самой формы(кот-ую мы передаём в reduxForm()()) onSubmit={props.handleSubmit}
-// handleSubmit - это функция, которая генерируется с помощью reduxFormComponent и опрокидывается через пропсы
-// Что она делает:
-// e.preventDefault()
-//  упаковывает все данные формы в один объект
-// вызывает ту функцию, кот-ую мы передали в reduxFormComponent и передаёт в нее сформированный объект с данными
-
-// что такое field level validation
-// валидация конкретного input'а
-
-// создание валидаторов(+ добавление)
-// Для валидации создаём папку utils(или helpers)
-// validators.js
-// Валидаторы - это функции, которые проверяют данные и возвращают null, если данные валидные и строку, если данные оказались не валидными
-// Для добавления используем атрибут validate={[массив функций(валидаторов)]}
-
-// что такое props.children
-// С помощью props.children можно получить содержимое парного компонента(т.е если у нас есть компонент Textarea, в кот-ый мы помещаем какие-то теги, то мы сможем их получить через props.children)
-
-// для чего мы добавили elementtype
-// вначале мы добавили функцию formControls, для того, чтобы обеспечить повторное использование кода
-// далее Для того, чтобы понимать какой html тэг должен быть отрисован, мы добавили атрибут elementtype, кот-ый берётся из props'ов и из кот-го рисуется html тэг
+// Как добиться правильного app initialization
+// Для этого сначало создаем appReducer, кот-ый будет содержать поле isInitialized
+// Создаём AC setInitialized
+// Далее в thunk me просто используем то, что любая функция dispatch возвращает promise, дожидаемся с помощью await выполнения всех dispatch нужных для инициализации приложения, и только после этого dispatch(setInitialized)(при чём в try и catch, т.е 2 раза)
+// Прокидываем в пропсы isInitialized и при не isInitialized показываем Preloader
+// ТО мы получим, что при обновлении страницы мы будем оказываться на той странице, с кот-ой мы обновляем приложение
 
 function App(props) {
     const dispatch = useDispatch();
@@ -74,6 +42,8 @@ function App(props) {
         () => {
             dispatch(me)
     }, [dispatch]);
+
+    if(!props.isInitialized) return <Preloader />
 
     return (
         <Router>
@@ -110,4 +80,8 @@ function App(props) {
     );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    isInitialized:state.app.isInitialized
+})
+
+export default connect(mapStateToProps, null)(App);

@@ -9,7 +9,7 @@ const appReducer = (state = initialState, action) => {
         case SET_IS_INITIALIZED:
             return {
                 ...state,
-                isInitialized: action.isInitialized
+                isInitialized: true
             };
 
         default:
@@ -17,9 +17,8 @@ const appReducer = (state = initialState, action) => {
     }
 };
 
-export const setUser = (isInitialized) => ({
+export const setInitialized = () => ({
     type: SET_IS_INITIALIZED,
-    isInitialized,
 });
 
 
