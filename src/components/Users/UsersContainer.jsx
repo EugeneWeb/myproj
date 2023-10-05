@@ -6,7 +6,7 @@ import {
     setUsersTotalCount,
     setFollowingInProgress,
     deleteFollowingInProgress,
-    getUsers,
+    requestUsers,
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import React from "react";
@@ -20,10 +20,12 @@ import {
 } from "../../redux/authReducer";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import { getCurrentPage, getFollowingInProgress, getIsFetching, getPerPage, getTotalCount, getUsersSuper } from "../../redux/users-selectors";
+import { getCurrentUser } from "../../redux/auth-selectors";
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-        this.props.getUsers(this.props.perPage, this.props.currentPage);
+        this.props.requestUsers(this.props.perPage, this.props.currentPage);
     }
 
     render() {
@@ -37,7 +39,7 @@ class UsersContainer extends React.Component {
         }
 
         const onChangePage = (pageNum) => {
-            this.props.getUsers(this.props.perPage, pageNum);
+            this.props.requestUsers(this.props.perPage, pageNum);
         };
 
         return (
@@ -67,13 +69,13 @@ class UsersContainer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        currentPage: state.usersPage.currentPage,
-        totalCount: state.usersPage.totalCount,
-        perPage: state.usersPage.perPage,
-        isFetching: state.usersPage.isFetching,
-        currentUser: state.auth.currentUser,
-        followingInProgress: state.usersPage.followingInProgress,
+        users: getUsersSuper(state),
+        currentPage: getCurrentPage(state),
+        totalCount: getTotalCount(state),
+        perPage: getPerPage(state),
+        isFetching: getIsFetching(state),
+        currentUser: getCurrentUser(state),
+        followingInProgress: getFollowingInProgress(state),
     };
 };
 
@@ -89,7 +91,7 @@ export default compose(
         setIsFetching,
         setFollowingInProgress,
         deleteFollowingInProgress,
-        getUsers,
+        requestUsers,
         follow,
         unfollow,
     }),

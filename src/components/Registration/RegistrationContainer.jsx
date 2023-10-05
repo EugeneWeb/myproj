@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import Registration from "./Registration";
 import React from "react";
 import { userRegistration } from "./../../redux/authReducer";
+import { getIsRegistered } from "../../redux/auth-selectors";
 
 class RegistrationContainer extends React.Component {
     render() {    
@@ -19,7 +20,7 @@ class RegistrationContainer extends React.Component {
 
 
 const mapStateToProps = (state) => ({
-    isRegistered: state.auth.isRegistered
+    isRegistered: getIsRegistered(state)
 })
 
 export default connect(mapStateToProps, {userRegistration})(RegistrationContainer)

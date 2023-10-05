@@ -85,7 +85,7 @@ export const deleteFollowingInProgress = (userId) => ({
     userId,
 });
 
-export const getUsers = (perPage, currentPage) => (dispatch) => {
+export const requestUsers = (perPage, currentPage) => (dispatch) => {
     dispatch(setIsFetching(true));
 
     usersAPI.getUsers(perPage, currentPage).then((resp) => {
@@ -98,7 +98,7 @@ export const getUsers = (perPage, currentPage) => (dispatch) => {
     });
 };
 
-export const getProfile = (userId) => (dispatch) => {
+export const requestProfile = (userId) => (dispatch) => {
     profileAPI.setProfile(userId).then((resp) => {
         dispatch(setUsersProfile(resp));
     });

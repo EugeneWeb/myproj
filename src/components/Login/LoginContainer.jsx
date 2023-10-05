@@ -3,6 +3,7 @@ import Login from './Login'
 import { connect } from 'react-redux'
 import { loginUser } from '../../redux/authReducer'
 import { Navigate } from 'react-router-dom'
+import { getIsAuth } from '../../redux/auth-selectors'
 
 
 class LoginContainer extends Component {
@@ -18,7 +19,7 @@ class LoginContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    isAuth: state.auth.isAuth
+    isAuth: getIsAuth(state)
 })
 
 export default connect(mapStateToProps, {loginUser})(LoginContainer)

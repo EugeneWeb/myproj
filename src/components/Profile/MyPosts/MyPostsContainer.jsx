@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 // import StoreContext from '../../../StoreContext'
 import { addPost } from '../../../redux/profile-reducer'
 import MyPosts from './MyPosts'
+import { getPosts } from '../../../redux/profile-selectors'
 
 
 // const MyPostsContainer = (props) => {
@@ -27,7 +28,7 @@ import MyPosts from './MyPosts'
 // }
 
 const mapStateToProps = (state) => ({
-    posts: state.profilePage.posts
+    posts: getPosts(state)
 })
 
 
