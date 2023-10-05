@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { authAPI, profileAPI, usersAPI } from "../api/api";
 import { setProfileStatus } from "./profile-reducer";
 import {
@@ -92,15 +93,26 @@ export const unfollowSuccess = (userId) => ({
 
 export const loginUser = (login, password) => (dispatch) => {
     usersAPI.login(login, password).then((userAuth) => {
-        dispatch(setUser(userAuth.user));
-        localStorage.setItem("token", userAuth.token);
+        if(userAuth.info.resultCode === 0) {
+            dispatch(setUser(userAuth.user));
+            localStorage.setItem("token", userAuth.token);
+        }
+        else {
+            dispatch(stopSubmit('login',{_error: userAuth.message}))
+        }
+        
     });
 };
 
 export const userRegistration = (username, email, password) => (dispatch) => {
     dispatch(setIsRegistered(false));
-    usersAPI.registration(username, email, password).then((regMsg) => {
-        dispatch(setIsRegistered(true));
+    usersAPI.registration(username, email, password).then((regObj) => {
+        if(regObj.info.resultCode === 0) {
+            dispatch(setIsRegistered(true));
+        }
+        else {
+            dispatch(stopSubmit('registration', {_error: regObj.message}))
+        }
     });
 };
 

@@ -4,7 +4,7 @@ import React from "react";
 import { userRegistration } from "./../../redux/authReducer";
 
 class RegistrationContainer extends React.Component {
-    render() {
+    render() {    
         const registration = (username, email, password) => {
             try {
                 this.props.userRegistration(username, email, password)
@@ -16,6 +16,7 @@ class RegistrationContainer extends React.Component {
         return <Registration {...this.props} registration={registration}/>;
     }
 }
+
 
 const mapStateToProps = (state) => ({
     isRegistered: state.auth.isRegistered

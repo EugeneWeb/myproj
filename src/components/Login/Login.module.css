@@ -10,28 +10,30 @@
     
     background-color: #E8EAED;
 }
+
 .form__legend {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 
     font-size: 24px;
 }
 
-.form__field{
-    margin-bottom: 20px;
+.form__field {
+    margin-bottom: 30px !important;
 }
 
 
 .form__field input {
-    width: 300px;
+    width: 350px;
 
     padding: 10px 15px;
     border-radius: 10px;
-    border: none;
+    border: 1px solid transparent;
 
     font-size: 16px;
 }
 .form__field input:focus {
-    outline: 1px solid rgb(182, 182, 182);
+    outline: none;
+    border-color: rgb(182, 182, 182);
 }
 
 .form__btn {

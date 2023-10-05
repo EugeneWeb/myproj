@@ -5,6 +5,7 @@ import s from "./NavBar.module.css";
 import FriendsContainer from "./Friends/FriendsContainer";
 
 const NavBar = (props) => {
+    
     return (
         <aside className={s.navbar}>
             <nav className={s.navigation}>
@@ -86,7 +87,7 @@ const NavBar = (props) => {
 
             {/* Создать тег friends, в который поместить этот код, а friends уже должен принимать в себя через контейнерную компоненту в пропсах массив friends */}
             
-            <FriendsContainer />
+            {props.isAuth && <FriendsContainer />}
 
             {/*Старый способ с friend вообще не правильный, нужно было создать контейнерную компоненту
              <StoreContext.Consumer>

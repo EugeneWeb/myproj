@@ -1,5 +1,5 @@
 .title {
-    margin-bottom:10px;
+    margin-bottom:30px;
 
     font-weight: normal;
 }
@@ -7,11 +7,10 @@
 #addNews {
     margin-bottom: 15px;
 }
-#addNews textarea {
-    width: calc(100% - 20px);
+#postText {
     margin-bottom: 10px;
     padding: 10px;
-    border: none;
+    border: 1px solid beige;
 
     font-size: 16px;
 
@@ -19,8 +18,9 @@
 
     resize: none;
 }
-#addNews textarea:focus {
-    outline: 1px solid #919191;
+#postText:focus {
+    outline: none;
+    border:1px solid #919191;
 }
 
 .addNews__btn {

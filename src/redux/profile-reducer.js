@@ -16,7 +16,6 @@ const initialState = {
             likesCount: 101,
         },
     ],
-    newPostText: "Text",
     profile: null,
 };
 
@@ -25,7 +24,7 @@ const profileReducer = (state = initialState, action) => {
         case ADD_POST:
             const newPost = {
                 path: "./img/avatars/avatar1.svg",
-                text: state.newPostText,
+                text: action.postText,
                 likesCount: 25,
             };
             return {
@@ -34,11 +33,6 @@ const profileReducer = (state = initialState, action) => {
                 newPostText: "",
             };
 
-        case UPDATE_NEW_POST_TEXT:
-            return {
-                ...state,
-                newPostText: action.newPostText,
-            };
         case SET_USERS_PROFILE:
             return {
                 ...state,
@@ -57,13 +51,11 @@ const profileReducer = (state = initialState, action) => {
     }
 };
 
-export const addPostActionCreator = () => ({
+export const addPost = (postText) => ({
     type: ADD_POST,
+    postText
 });
-export const updateNewPostTextActionCreator = (text) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    newPostText: text,
-});
+
 export const setUsersProfile = (profile) => ({
     type: SET_USERS_PROFILE,
     profile,

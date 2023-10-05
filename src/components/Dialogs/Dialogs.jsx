@@ -4,19 +4,26 @@ import DialogsItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
 
 import sendIcon from "./icons/send_icon.svg";
+import { Field, reduxForm } from "redux-form";
+import { maxLength } from "../../utils/validators";
+import { Textarea } from "../common/FormControls/FormControls";
 
 const Dialogs = (props) => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    };
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    // };
 
-    const handleMessageBodyChange = (e) => {
-        props.updateNewMessageBody(e.target.value);
-    };
+    // const handleMessageBodyChange = (e) => {
+    //     props.updateNewMessageBody(e.target.value);
+    // };
 
-    const handleSendMessage = () => {
-        props.sendMessage();
-    };
+    // const handleSendMessage = () => {
+    //     props.sendMessage();
+    // };
+
+    const onSubmit = (formData) => {
+        props.sendMessage(formData.messageText)
+    }
 
     return (
         <div className={s.dialogs}>
@@ -38,7 +45,7 @@ const Dialogs = (props) => {
                     ))}
                 </ul>
 
-                <form onSubmit={handleSubmit} id={s.messageForm}>
+                {/* <form onSubmit={handleSubmit} id={s.messageForm}>
                     <textarea
                         value={props.newMessageBody}
                         onChange={handleMessageBodyChange}
@@ -51,10 +58,29 @@ const Dialogs = (props) => {
                     >
                         <img src={sendIcon} alt="Иконка отправить" />
                     </button>
-                </form>
+                </form> */}
+                <MessageReduxForm onSubmit={onSubmit}/>
             </div>
         </div>
     );
 };
+
+const messageForm = (props) => {
+    const maxLength300 = maxLength(300) 
+    return (
+        <form onSubmit={props.handleSubmit} id={s.messageForm}>
+            <Field className={s.message__input} name="messageText" elementtype="textarea" component={Textarea} validate={[ maxLength300]} />
+
+            <button
+                type="submit"
+                className={s.message__btn}
+            >
+                <img src={sendIcon} alt="Иконка отправить" />
+            </button>
+        </form>
+    );
+};
+
+const MessageReduxForm = reduxForm({form:'message'})(messageForm)
 
 export default Dialogs;

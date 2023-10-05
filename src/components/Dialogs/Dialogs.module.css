@@ -20,7 +20,9 @@
 }
 
 #messageForm {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 40px;
+    grid-template-rows: 1fr;
     gap: 5px;
     align-items: center;
 }
@@ -28,7 +30,7 @@
 .message__input {
     display: block;
     padding: 10px;
-    height: 20px;
+    height: 40px;
     overflow: hidden;
     resize: none;
     border: 2px solid #b3b2b2;
@@ -36,8 +38,6 @@
 
     font-size: 16px;
     font-family: sans-serif;
-
-    flex: 1 1;
 }
 .message__input:focus {
     outline: none;

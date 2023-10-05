@@ -1,7 +1,7 @@
 // import StoreContext from "../../StoreContext";
 import { connect } from "react-redux";
 import {
-    sendMessageCreator,
+    sendMessage,
     updateNewMessageBodyCreator,
 } from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
@@ -15,19 +15,19 @@ const mapStateToProps = (state) => {
         newMessageBody: state.dialogsPage.newMessageBody
     }
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateNewMessageBody: (body) => {
-            dispatch(updateNewMessageBodyCreator(body));
-        },
-        sendMessage: () => { dispatch(sendMessageCreator()); }
-    }
-}
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         updateNewMessageBody: (body) => {
+//             dispatch(updateNewMessageBodyCreator(body));
+//         },
+//         sendMessage: () => { dispatch(sendMessageCreator()); }
+//     }
+// }
 
 
 
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps, { sendMessage }),
     withAuthRedirect
 )(Dialogs);
