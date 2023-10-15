@@ -6,8 +6,7 @@ import { maxLength } from "../../../utils/validators";
 import { Textarea } from "../../common/FormControls/FormControls";
 
 const MyPosts = (props) => {
-;
-
+    
     const onSubmit = (formData) => {
         props.addPost(formData.postText);
     }

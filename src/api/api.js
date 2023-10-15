@@ -56,7 +56,7 @@ export const profileAPI = {
     },
     updateStatus(status) {
         return instance
-                .put('/status', {status})
+                .put('/status', {status}, {headers:{Authorization: localStorage.getItem('token')}})
                 .then(resp => resp.data)
     }
 }
