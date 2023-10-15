@@ -2,6 +2,7 @@ const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const SET_USERS_PROFILE = "SET_USERS_PROFILE";
 const SET_PROFILE_STATUS = "SET_PROFILE_STATUS";
+const DELETE_POST = 'DELETE_POST'
 
 const initialState = {
     posts: [
@@ -21,6 +22,11 @@ const initialState = {
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter((value, index) => action.postId != index)
+            }
         case ADD_POST:
             const newPost = {
                 path: "./img/avatars/avatar1.svg",
@@ -54,6 +60,10 @@ const profileReducer = (state = initialState, action) => {
 export const addPost = (postText) => ({
     type: ADD_POST,
     postText
+});
+export const deletePost = (postId) => ({
+    type: DELETE_POST,
+    postId
 });
 
 export const setUsersProfile = (profile) => ({
