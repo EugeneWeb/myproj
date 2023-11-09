@@ -1,4 +1,4 @@
-const SET_IS_INITIALIZED = "SET_IS_INITIALIZED";
+const SET_IS_INITIALIZED = "/app/SET_IS_INITIALIZED";
 
 const initialState = {
     isInitialized: false

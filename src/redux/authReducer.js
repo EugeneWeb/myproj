@@ -6,19 +6,22 @@ import {
     setFollowingInProgress,
 } from "./users-reducer";
 import { setInitialized } from "./appReducer";
+import { updateObjectInArray } from "../utils/object-helpers";
 
-const SET_USER = "SET_USER";
-const LOGOUT = "LOGOUT";
-const SET_IS_REGISTERED = "SET_REGISTERED";
-const FOLLOW = "FOLLOW";
-const UNFOLLOW = "UNFOLLOW";
-const SET_STATUS = "SET_STATUS";
+const SET_USER = "/auth/SET_USER";
+const LOGOUT = "/auth/LOGOUT";
+const SET_IS_REGISTERED = "/auth/SET_REGISTERED";
+const FOLLOW = "/auth/FOLLOW";
+const UNFOLLOW = "/auth/UNFOLLOW";
+const SET_STATUS = "/auth/SET_STATUS";
 
 const initialState = {
     currentUser: {},
     isAuth: false,
     isRegistered: false,
 };
+
+
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -28,7 +31,7 @@ const authReducer = (state = initialState, action) => {
                 currentUser: {
                     ...state.currentUser,
                     following: [...state.currentUser.following, action.userId],
-                },
+                }
             };
         case UNFOLLOW:
             return {
@@ -63,7 +66,7 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 currentUser: {
                     ...state.currentUser,
-                    status: action.status
+                    status: action.status,
                 },
             };
 
@@ -92,51 +95,125 @@ export const unfollowSuccess = (userId) => ({
     userId,
 });
 
-export const loginUser = (login, password) => (dispatch) => {
-    usersAPI.login(login, password).then((userAuth) => {
-        if(userAuth.info.resultCode === 0) {
+export const loginUser = (login, password) => async (dispatch) => {
+    try {
+        const userAuth = await usersAPI.login(login, password);
+
+        if (userAuth.info.resultCode === 0) {
             dispatch(setUser(userAuth.user));
             localStorage.setItem("token", userAuth.token);
+        } else {
+            dispatch(stopSubmit("login", { _error: userAuth.message }));
         }
-        else {
-            dispatch(stopSubmit('login',{_error: userAuth.message}))
-        }
-        
-    });
+    } catch (error) {}
+
+    // usersAPI.login(login, password).then((userAuth) => {
+    //     if(userAuth.info.resultCode === 0) {
+    //         dispatch(setUser(userAuth.user));
+    //         localStorage.setItem("token", userAuth.token);
+    //     }
+    //     else {
+    //         dispatch(stopSubmit('login',{_error: userAuth.message}))
+    //     }
+
+    // });
 };
 
-export const userRegistration = (username, email, password) => (dispatch) => {
-    dispatch(setIsRegistered(false));
-    usersAPI.registration(username, email, password).then((regObj) => {
-        if(regObj.info.resultCode === 0) {
-            dispatch(setIsRegistered(true));
+export const userRegistration =
+    (username, email, password) => async (dispatch) => {
+        try {
+            await dispatch(setIsRegistered(false));
+            const regObj = await usersAPI.registration(
+                username,
+                email,
+                password
+            );
+            if (regObj.info.resultCode === 0) {
+                dispatch(setIsRegistered(true));
+            } else {
+                dispatch(
+                    stopSubmit("registration", { _error: regObj.message })
+                );
+            }
+        } catch (error) {}
+
+        // dispatch(setIsRegistered(false));
+        // usersAPI.registration(username, email, password).then((regObj) => {
+        //     if (regObj.info.resultCode === 0) {
+        //         dispatch(setIsRegistered(true));
+        //     } else {
+        //         dispatch(stopSubmit("registration", { _error: regObj.message }));
+        //     }
+        // });
+    };
+
+const followUnfollowFlow = async (
+    dispatch,
+    userId,
+    apiMethod,
+    actionCreator
+) => {
+    try {
+        await dispatch(setFollowingInProgress(userId));
+        const resp = await apiMethod(userId);
+        await dispatch(deleteFollowingInProgress(userId));
+
+        if (resp.resultCode === 0) {
+            dispatch(actionCreator(userId));
         }
-        else {
-            dispatch(stopSubmit('registration', {_error: regObj.message}))
-        }
-    });
+    } catch (error) {}
 };
 
 export const unfollow = (userId) => (dispatch) => {
-    dispatch(setFollowingInProgress(userId));
-    usersAPI.unfollow(userId).then((resp) => {
-        dispatch(deleteFollowingInProgress(userId));
+    const apiMethod = usersAPI.unfollow.bind(usersAPI);
+    followUnfollowFlow(dispatch, userId, apiMethod, unfollowSuccess);
+    // try {
+    //     const methodApi = usersAPI.unfollow.bind(usersAPI)
+    //     const actionCreator = unfollowSuccess
+    //     followUnfollowFlow(dispatch, userId, methodApi, actionCreator)
+    //     // await dispatch(setFollowingInProgress(userId));
+    //     // const resp = await usersAPI.unfollow(userId);
+    //     // await dispatch(deleteFollowingInProgress(userId));
 
-        if (resp.resultCode === 0) {
-            dispatch(unfollowSuccess(userId));
-        }
-    });
+    //     // if (resp.resultCode === 0) {
+    //     //     dispatch(unfollowSuccess(userId));
+    //     // }
+    // } catch (error) {}
+
+    // dispatch(setFollowingInProgress(userId));
+    // usersAPI.unfollow(userId).then((resp) => {
+    //     dispatch(deleteFollowingInProgress(userId));
+
+    //     if (resp.resultCode === 0) {
+    //         dispatch(unfollowSuccess(userId));
+    //     }
+    // });
 };
 
 export const follow = (userId) => (dispatch) => {
-    dispatch(setFollowingInProgress(userId));
-    usersAPI.follow(userId).then((resp) => {
-        dispatch(deleteFollowingInProgress(userId));
+    const apiMethod = usersAPI.follow.bind(usersAPI);
+    followUnfollowFlow(dispatch, userId, apiMethod, followSuccess);
+    // try {
+    //     const methodApi = usersAPI.follow.bind(usersAPI)
+    //     const actionCreator = followSuccess
+    //     followUnfollowFlow(dispatch, userId, methodApi, actionCreator)
+    //     // await dispatch(setFollowingInProgress(userId));
+    //     // const resp = await usersAPI.follow(userId);
+    //     // await dispatch(deleteFollowingInProgress(userId));
 
-        if (resp.resultCode === 0) {
-            dispatch(followSuccess(userId));
-        }
-    });
+    //     // if (resp.resultCode === 0) {
+    //     //     dispatch(followSuccess(userId));
+    //     // }
+    // } catch (error) {}
+
+    // dispatch(setFollowingInProgress(userId));
+    // usersAPI.follow(userId).then((resp) => {
+    //     dispatch(deleteFollowingInProgress(userId));
+
+    //     if (resp.resultCode === 0) {
+    //         dispatch(followSuccess(userId));
+    //     }
+    // });
 };
 
 export const me = async (dispatch) => {
@@ -144,9 +221,9 @@ export const me = async (dispatch) => {
         const resp = await authAPI.me();
 
         await dispatch(setUser(resp.user));
-        dispatch(setInitialized())
+        dispatch(setInitialized());
     } catch (error) {
-        dispatch(setInitialized())
+        dispatch(setInitialized());
         console.log(error);
         localStorage.removeItem("token");
     }
@@ -157,13 +234,22 @@ export const setStatus = (status) => ({
     status,
 });
 
-export const getStatus = (status) => (dispatch) => {
-    profileAPI.updateStatus(status).then((resp) => {
+export const getStatus = (status) => async (dispatch) => {
+    try {
+        const resp = await profileAPI.updateStatus(status);
+
         if (resp.user.resultCode === 1) {
             dispatch(setStatus(status));
             dispatch(setProfileStatus(status));
         }
-    });
+    } catch (error) {}
+
+    // profileAPI.updateStatus(status).then((resp) => {
+    //     if (resp.user.resultCode === 1) {
+    //         dispatch(setStatus(status));
+    //         dispatch(setProfileStatus(status));
+    //     }
+    // });
 };
 
 export default authReducer;

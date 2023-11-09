@@ -1,14 +1,14 @@
 import s from './DialogsItem.module.css'
 import { NavLink } from 'react-router-dom'
 
-const DialogsItem = (props) => {
+const DialogsItem = ({id, path, name}) => {
     return (
         <li className={s.dialogsitem}>
-            <NavLink to={`/messages/${props.id}`} className={({isActive}) => isActive ? `${s.active} ${s.dialog__link}` : s.dialog__link }>
+            <NavLink to={`/messages/${id}`} className={({isActive}) => isActive ? `${s.active} ${s.dialog__link}` : s.dialog__link }>
                 <div className={s.img__wrap}>
-                    <img src={props.path} alt="Лого пользователя" />
+                    <img src={path} alt="Лого пользователя" />
                 </div>
-                <p>{props.name}</p>
+                <p>{name}</p>
             </NavLink>
         </li>
     )

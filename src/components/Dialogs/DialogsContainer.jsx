@@ -15,17 +15,6 @@ const mapStateToProps = (state) => {
         newMessageBody: getNewMessageBody(state)
     }
 }
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         updateNewMessageBody: (body) => {
-//             dispatch(updateNewMessageBodyCreator(body));
-//         },
-//         sendMessage: () => { dispatch(sendMessageCreator()); }
-//     }
-// }
-
-
-
 
 export default compose(
     connect(mapStateToProps, { sendMessage }),

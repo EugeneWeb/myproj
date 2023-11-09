@@ -1,39 +1,39 @@
 import s from './ProfileInfo.module.css'
 import ProfileStatus from './ProfileStatus/ProfileStatus'
 
-const ProfileInfo = (props) => {
+const ProfileInfo = ({profile, getStatus}) => {
     return (
         <div>
             <div className={s.bg}>
-                <img src={`../${props.profile.backgroundUrl}`} alt="Картинка обоев" />
+                <img src={profile.backgroundUrl} alt="Картинка обоев" />
             </div>
 
             <div className={s.info}>
                 <div className={s.avatar__wrap}>
-                    <img src={`../${props.profile.photoUrl}`} alt="Аватарка" />
+                    <img src={profile.photoUrl} alt="Аватарка" />
                 </div>
 
                 <div className={s.user}>
-                    <div className={s.user__name}>{props.profile.fullname}</div>
+                    <div className={s.user__name}>{profile.fullname}</div>
 
-                    <ProfileStatus status={props.profile.status} getStatus={props.getStatus} />
+                    <ProfileStatus status={profile.status} getStatus={getStatus} />
 
                     <dl>
                         <div className={s.user__item}>
                             <dd>Дата рождения:</dd>
-                            <dt>{props.profile.desc.birthday}</dt>
+                            <dt>{profile.desc.birthday}</dt>
                         </div>
                         <div className={s.user__item}>
                             <dd>Город:</dd>
-                            <dt>{props.profile.location.city}</dt>
+                            <dt>{profile.location.city}</dt>
                         </div>
                         <div className={s.user__item}>
                             <dd>Образование:</dd>
-                            <dt>{props.profile.desc.education}</dt>
+                            <dt>{profile.desc.education}</dt>
                         </div>
                         <div className={s.user__item}>
                             <dd>Веб-страница:</dd>
-                            <dt><a href={props.profile.desc.website} rel="noopener noreferrer" target='_blank'>{props.profile.desc.website}</a></dt>
+                            <dt><a href={profile.desc.website} rel="noopener noreferrer" target='_blank'>{profile.desc.website}</a></dt>
                         </div>
                     </dl>
                 </div>

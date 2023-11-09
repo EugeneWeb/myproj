@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import socialSvg from './img/icons/social network_icon.svg'
 import s from './Header.module.css'
 
-const Header = (props) => {
+const Header = ({isAuth, setLogout, currentUser}) => {
     return (
         <header className={s.header}>
             <div className={s.logo}>
@@ -12,7 +12,7 @@ const Header = (props) => {
                 </NavLink>
             </div>
 
-            {!props.isAuth 
+            {!isAuth 
             ? 
             <div className={s.header__btns}>
                 <NavLink to='/login' className={s.login}>Авторизация</NavLink>
@@ -21,18 +21,18 @@ const Header = (props) => {
             : 
                 <div className={s.user__info}>
                     <div className={s.user__btn}>
-                        <NavLink to='/login' onClick={() => {props.setLogout()}} className={s.close}>Выход</NavLink>
+                        <NavLink to='/login' onClick={() => {setLogout()}} className={s.close}>Выход</NavLink>
                     </div>
 
                     <div className={s.img__wrap}>
                         <NavLink to='/profile'>
-                            <img src={props.currentUser.photoUrl} alt={`${props.currentUser.username} аватарка`} />
+                            <img src={currentUser.photoUrl} alt={`${currentUser.username} аватарка`} />
                         </NavLink>
                     </div>
                     
                     <div className={s.user__content}>
-                        <p className={s.username}>{props.currentUser.username}</p>
-                        <p>{props.currentUser.email}</p>
+                        <p className={s.username}>{currentUser.username}</p>
+                        <p>{currentUser.email}</p>
                     </div>
                 </div>
                 

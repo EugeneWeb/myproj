@@ -25,7 +25,8 @@ import { getCurrentUser } from "../../redux/auth-selectors";
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-        this.props.requestUsers(this.props.perPage, this.props.currentPage);
+        const {perPage, currentPage} = this.props
+        this.props.requestUsers(perPage, currentPage);
     }
 
     render() {
@@ -39,7 +40,8 @@ class UsersContainer extends React.Component {
         }
 
         const onChangePage = (pageNum) => {
-            this.props.requestUsers(this.props.perPage, pageNum);
+            const {perPage} = this.props
+            this.props.requestUsers(perPage, pageNum);
         };
 
         return (

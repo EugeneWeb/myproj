@@ -1,10 +1,8 @@
 import { NavLink } from "react-router-dom";
 import s from "./NavBar.module.css";
-// import Friend from "./Friends/Friend/Friend";
-// import StoreContext from "../../StoreContext";
 import FriendsContainer from "./Friends/FriendsContainer";
 
-const NavBar = (props) => {
+const NavBar = ({isAuth}) => {
     
     return (
         <aside className={s.navbar}>
@@ -84,32 +82,9 @@ const NavBar = (props) => {
                     </li>
                 </ul>
             </nav>
-
-            {/* Создать тег friends, в который поместить этот код, а friends уже должен принимать в себя через контейнерную компоненту в пропсах массив friends */}
             
-            {props.isAuth && <FriendsContainer />}
+            {isAuth && <FriendsContainer />}
 
-            {/*Старый способ с friend вообще не правильный, нужно было создать контейнерную компоненту
-             <StoreContext.Consumer>
-                {(store) => {
-                    return (
-                        <div className={s.friends}>
-                            <h3 className={s.friends__title}>Друзья</h3>
-                            <div className={s.friends__items}>
-                                {store.getState().navBarPage.friends.map(
-                                    (friend, index) => (
-                                        <Friend
-                                            key={index}
-                                            name={friend.name}
-                                            path={friend.path}
-                                        />
-                                    )
-                                )}
-                            </div>
-                        </div>
-                    );
-                }}
-            </StoreContext.Consumer> */}
         </aside>
     );
 };

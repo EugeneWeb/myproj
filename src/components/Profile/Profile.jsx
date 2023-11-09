@@ -3,15 +3,15 @@ import MyPostsContainer from './MyPosts/MyPostsContainer'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import Preloader from '../common/Preloader/Preloader'
 
-const Profile = (props) => {
+const Profile = ({profile, getStatus}) => {
     
-    if(!props.profile) {
+    if(!profile) {
         return <Preloader />
     }
     
     return (
         <div className={s.profile}>
-            <ProfileInfo profile={props.profile} getStatus={props.getStatus} />
+            <ProfileInfo profile={profile} getStatus={getStatus} />
             <MyPostsContainer />
         </div>
     )

@@ -1,12 +1,12 @@
 
 const initialState = {
     friends: [
-        {name: 'Александрffffff', path: "./img/avatars/avatar1.svg"},
-        {name: 'Михаил', path: "./img/avatars/avatar1.svg"},
-        {name: 'Андрей', path: "./img/avatars/avatar1.svg"},
-        {name: 'Александр', path: "./img/avatars/avatar1.svg"},
-        {name: 'Александр', path: "./img/avatars/avatar1.svg"},
-        {name: 'Андрей', path: "./img/avatars/avatar1.svg"}
+        {name: 'Александрffffff', path: "http://localhost:5000/avatar/avatar1.svg"},
+        {name: 'Михаил', path: "http://localhost:5000/avatar/avatar1.svg"},
+        {name: 'Андрей', path: "http://localhost:5000/avatar/avatar1.svg"},
+        {name: 'Александр', path: "http://localhost:5000/avatar/avatar1.svg"},
+        {name: 'Александр', path: "http://localhost:5000/avatar/avatar1.svg"},
+        {name: 'Андрей', path: "http://localhost:5000/avatar/avatar1.svg"}
     ]
 }
 

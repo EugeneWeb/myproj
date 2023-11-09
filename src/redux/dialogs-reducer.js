@@ -1,13 +1,13 @@
-const SEND_MESSAGE = "SEND-MESSAGE";
-const UPDATE_NEW_MESSAGE_BODY = "UPDATE-NEW-MESSAGE-BODY";
+const SEND_MESSAGE = "/dialogs/SEND-MESSAGE";
+const UPDATE_NEW_MESSAGE_BODY = "/dialogs/UPDATE-NEW-MESSAGE-BODY";
 
 let initialState = {
     dialogs: [
-        { id: 1, name: "Андрей", path: "./img/avatars/avatar1.svg" },
-        { id: 2, name: "Александр", path: "./img/avatars/avatar1.svg" },
-        { id: 3, name: "Михаил", path: "./img/avatars/avatar1.svg" },
-        { id: 4, name: "Алексей", path: "./img/avatars/avatar1.svg" },
-        { id: 5, name: "Максим", path: "./img/avatars/avatar1.svg" }
+        { id: 1, name: "Андрей", path: "http://localhost:5000/avatar/avatar1.svg" },
+        { id: 2, name: "Александр", path: "http://localhost:5000/avatar/avatar1.svg" },
+        { id: 3, name: "Михаил", path: "http://localhost:5000/avatar/avatar1.svg" },
+        { id: 4, name: "Алексей", path: "http://localhost:5000/avatar/avatar1.svg" },
+        { id: 5, name: "Максим", path: "http://localhost:5000/avatar/avatar1.svg" }
     ],
     messages: [
         {

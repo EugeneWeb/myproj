@@ -5,10 +5,10 @@ import { Field, reduxForm } from "redux-form";
 import { maxLength } from "../../../utils/validators";
 import { Textarea } from "../../common/FormControls/FormControls";
 
-const MyPosts = (props) => {
+const MyPosts = ({addPost, posts, }) => {
     
     const onSubmit = (formData) => {
-        props.addPost(formData.postText);
+        addPost(formData.postText);
     }
 
     return (
@@ -18,7 +18,7 @@ const MyPosts = (props) => {
             <PostReduxForm onSubmit={onSubmit} />
 
             <ul className="posts">
-                {props.posts.map((img, index) => (
+                {posts.map((img, index) => (
                     <Post
                         key={index}
                         path={`${img.path}`}
@@ -31,26 +31,13 @@ const MyPosts = (props) => {
     );
 };
 
-const PostForm = (props) => {
-    // const newPostText = React.createRef();
+const PostForm = ({handleSubmit}) => {
 
-
-
-    // const handleOnChange = (e) => {
-    //     const postText = newPostText.current.value;
-    //     props.updateNewPostText(postText);
-    // };
     const maxLength200 = maxLength(200)
     return (
-        <form id={s.addNews} onSubmit={props.handleSubmit}>
+        <form id={s.addNews} onSubmit={handleSubmit}>
             <Field id={s.postText} name="postText" component={Textarea} elementtype="textarea" placeholder="Ваша новость..." validate={[maxLength200]} />
 
-            {/* <textarea
-                ref={newPostText}
-                placeholder="Ваша новость..."
-                onChange={handleOnChange}
-                value={props.newPostText}
-            ></textarea> */}
             <div className={s.addNews__btn}>
                 <button type="submit">Отправить</button>
             </div>

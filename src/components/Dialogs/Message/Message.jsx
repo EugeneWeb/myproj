@@ -1,9 +1,9 @@
 import s from './Message.module.css'
 
-const Message = (props) => {
+const Message = ({message}) => {
     return (
         <div className={s.message}>
-            <p className="text">{props.message}</p>
+            <p className="text">{message}</p>
         </div>
     )
 }

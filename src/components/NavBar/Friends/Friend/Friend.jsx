@@ -1,12 +1,12 @@
 import s from "./Friend.module.css";
 
-const Friend = (props) => {
+const Friend = ({path, name}) => {
     return (
         <div className={s.friend}>
             <div className={s.img__wrap}>
-                <img src={props.path} alt="Иконка пользователя" />
+                <img src={path} alt="Иконка пользователя" />
             </div>
-            <p className={s.name}>{props.name}</p>
+            <p className={s.name}>{name}</p>
         </div>
     );
 };

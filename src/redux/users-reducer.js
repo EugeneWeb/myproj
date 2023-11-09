@@ -1,12 +1,12 @@
 import { profileAPI, usersAPI } from "../api/api";
 import { setUsersProfile } from "./profile-reducer";
 
-const SET_USERS = "SET-USERS";
-const SET_USERS_TOTAL_COUNT = "SET-USERS-TOTAL-COUNT";
-const SET_CURRENT_PAGE = "SET-CURRENT-PAGE";
-const SET_ISFETCHING = "SET_ISFETCHING";
-const SET_FOLLOWING_IN_PROGRESS = "SET_FOLLOWING_IN_PROGRESS";
-const DELETE_FOLLOWING_IN_PROGRESS = "DELETE_FOLLOWING_IN_PROGRESS";
+const SET_USERS = "/users/SET-USERS";
+const SET_USERS_TOTAL_COUNT = "/users/SET-USERS-TOTAL-COUNT";
+const SET_CURRENT_PAGE = "/users/SET-CURRENT-PAGE";
+const SET_ISFETCHING = "/users/SET_ISFETCHING";
+const SET_FOLLOWING_IN_PROGRESS = "/users/SET_FOLLOWING_IN_PROGRESS";
+const DELETE_FOLLOWING_IN_PROGRESS = "/users/DELETE_FOLLOWING_IN_PROGRESS";
 
 const initialState = {
     users: [],
@@ -85,25 +85,37 @@ export const deleteFollowingInProgress = (userId) => ({
     userId,
 });
 
-export const requestUsers = (perPage, currentPage) => (dispatch) => {
-    dispatch(setIsFetching(true));
+export const requestUsers = (perPage, currentPage) => async (dispatch) => {
+    try {
+        await dispatch(setIsFetching(true));
+        const resp = await usersAPI.getUsers(perPage, currentPage);
+        await dispatch(setIsFetching(false));
 
-    usersAPI.getUsers(perPage, currentPage).then((resp) => {
-        dispatch(setCurrentPage(currentPage))
-
-        dispatch(setIsFetching(false));
-
+        dispatch(setCurrentPage(currentPage));
         dispatch(setUsers(resp.users));
         dispatch(setUsersTotalCount(resp.totalCount));
-    });
+    } catch (error) {}
+
+    // dispatch(setIsFetching(true));
+    // usersAPI.getUsers(perPage, currentPage).then((resp) => {
+    //     dispatch(setCurrentPage(currentPage))
+
+    //     dispatch(setIsFetching(false));
+
+    //     dispatch(setUsers(resp.users));
+    //     dispatch(setUsersTotalCount(resp.totalCount));
+    // });
 };
 
-export const requestProfile = (userId) => (dispatch) => {
-    profileAPI.setProfile(userId).then((resp) => {
-        dispatch(setUsersProfile(resp));
-    });
+export const requestProfile = (userId) => async (dispatch) => {
+    try {
+        const profiles = await profileAPI.setProfile(userId);
+        dispatch(setUsersProfile(profiles));
+    } catch (error) {}
+
+    // profileAPI.setProfile(userId).then((resp) => {
+    //     dispatch(setUsersProfile(resp));
+    // });
 };
-
-
 
 export default usersReducer;
