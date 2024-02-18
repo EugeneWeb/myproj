@@ -1,7 +1,21 @@
 .pageBtn {
     padding: 10px;
+
+    cursor: pointer;
 }
 
 .selectedPage {
-    background-color: #C5AB12;
+    background-color: #c5ab12;
+}
+
+.arrow {
+    height: 35px;
+    width: 30px;
+
+    cursor: pointer;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
 }

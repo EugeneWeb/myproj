@@ -30,14 +30,7 @@ class UsersContainer extends React.Component {
     }
 
     render() {
-        // Вычитаем одного из totalCount, потому что себя не считаем
-        const pagesCount = Math.ceil(
-            this.props.totalCount / this.props.perPage
-        );
-        const pages = [];
-        for (let i = 1; i <= pagesCount; i++) {
-            pages.push(i);
-        }
+        
 
         const onChangePage = (pageNum) => {
             const {perPage} = this.props
@@ -50,12 +43,13 @@ class UsersContainer extends React.Component {
                     <Preloader className={s.preloader} />
                 ) : null}
                 <Users
+                    totalCount={this.props.totalCount}
+                    perPage={this.props.perPage}
                     isFetching={this.props.isFetching}
                     users={this.props.users}
                     onChangePage={onChangePage}
                     follow={this.props.follow}
                     unfollow={this.props.unfollow}
-                    pages={pages}
                     currentPage={this.props.currentPage}
                     currentUser={this.props.currentUser}
                     followingInProgress={this.props.followingInProgress}

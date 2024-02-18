@@ -1,19 +1,21 @@
+import React, { useEffect } from "react";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import s from "./App.module.css";
-
 
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import Error from "./components/Error/Error";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
-import UsersContainer from "./components/Users/UsersContainer";
+
+// const UsersContainer = React.lazy(() => import("./components/Users/UsersContainer"));
+
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import RegistrationContainer from "./components/Registration/RegistrationContainer";
 import LoginContainer from "./components/Login/LoginContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 
 import { me } from "./redux/authReducer";
@@ -21,54 +23,64 @@ import NavBarContainer from "./components/NavBar/NavBarContainer";
 import Preloader from "./components/common/Preloader/Preloader";
 import { getIsInitialized } from "./redux/app-selectors";
 import { getIsAuth } from "./redux/auth-selectors";
+const UsersContainer = React.lazy(() =>
+    import("./components/Users/UsersContainer")
+);
 
-// Добавления расширения redux devtools, для чего нужен, что такое браузерные расширения, Тест компонент(ошибка с axios, рендер App компоненты, что нужно для тестирования компоненты, Как сделать группы тестов, Библиотека для тестирования react компонентов(что использовать вместо неё))
-// нужен для того, чтобы отслеживать изменения state'а, отправленные action'ы, изменения(diff)
-// С помощью jump можем отматывать на предыдущие состояния state'а и в связке с react developer tools смотреть изменения пропсов и state'ов
-
-// Заходим в документацию, находим advanced store setup(так как используем middleware)
-// глобальный window.store можем убрать
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-// const store = legacy_createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
-
-// что такое браузерные расширения
-// Браузерные расширения - это js код, который может присоединяться к странице и брать из неё информацию, работает как js, который был подключен со стороны(нужно скачивать с умом, так как могут воровать персональные данные)
-// javascript код, которому мы разрешили выполняться на любой нашей странице(+ иногда ещё html/css)
-// имеют доступ к DOM и другим данным(пользователь выбирает сам какие данные может изменять то или иное расширение)
+// Исправление paginator, во что упаковываются все js файлы, почему,
+// что такое lazy загрузка, зачем нужна, когда стоит использовать, что выбрать быструю загрузку в начале и медленное перемещение по страницам или медленную загразку вначале и быстрый переход по страницам?
+// как сборщик собирает компоненты в кучу? Как работает lazy в react(куда попадает, как загружается)
+// react lazy/react suspense, ошибка, которая может возникнуть при добавлении lazy загрузки(с импортами)
+// Как можно выложить fullstack(react+node.js) приложение бесплатно?
 
 
-// Тест компонент(ошибка с axios, рендер App компоненты, что нужно для тестирования компоненты)
-// Для того, чтобы исправить ошибку с axios добавляем в конец в package.json:
-// "jest": {
-//     "moduleNameMapper": {
-//       "axios": "axios/dist/node/axios.cjs"
-//     }
-//   }
-// Так как рендер App компоненты требует объект Store, который мы получаем с помощью контекста через Provider, мы создаём новую компоненту AppContainer, кот-я включает Provider и App, тестируем AppContainer компоненту на рендер 
 
-// что нужно для тестирования компоненты
-// Для тестирования компоненты нам нужно её отрендерить и посмотреть значения пропсов/внутренние элементы
 
-// Как сделать группы тестов
-// describe('dsf',(arguments) => {
-//     it('', (arguments) => {
-        
-//     })  
-// })
+// во что упаковываются все js файлы, почему
+// все js файлы упаковываются в 3 больших файлы(bundle.js, chunk.js)
+// это связано с тем, что по http протоколу быстрее грузить одним большим файлом, нежели несколькими малыми(http2 чуть ускоряет это)
 
-// Библиотека для тестирования react компонентов
-// npm i -D react-test-renderer@версия react - данная библиотека позволяет рендерить(преобразовывать) компоненты в нативные js объекты
-// Библиотека устарела, вместо неё используется react-testing-library
+// что такое lazy загрузка, зачем нужна
+// lazy загрузка - загрузка компонент по мере необходимости, в ходе использования нашего приложения, нужна для оптимизации первой загрузки и дальнейшего взаимодействия со страницей
+
+// когда стоит использовать
+// используется для тех компонент, которые пользователь скорее всего будет видит всегда/вероятнее всего поситит при первом появлении на сайте
+
+// что выбрать быструю загрузку в начале и медленное перемещение по страницам или медленную загразку вначале и быстрый переход по страницам?
+// Нет четкого ответа, зависит от проекта и заказчика, как правило, что-то среднее
+
+// как сборщик собирает компоненты в кучу? Как работает lazy в react(куда попадает, как загружается)
+// webpack пробегается по всем импортам и получается дерево(App сверху, у App какие-то импорты и т.д)
+// если компонента импортирована с помощью lazy, она не попадает в bundle и подгружается по мере необходимости
+
+// react lazy/react suspense
+// Для использования react lazy после всех импортов:
+// const UsersContainer = React.lazy(() =>
+//     import("./components/Users/UsersContainer") - используем именно функцию
+// );
+// А далее оборачиваем в Suspense <Routes></Routes>(при этом всё будет отрабатывать для каждой компоненты Route, которая импортируется через lazy, не затрагивая другие)
+// Suspense - тревога ожидания - с помощью него мы задаём элемент, который будет отображаться, пока не подгрузиться lazy компонента
+// Также нужно учитывать, что если не подгружается компонента, то и её вложенные компоненты не будут загружаться
+
+// ошибка, которая может возникнуть при добавлении lazy загрузки(с импортами)
+// Import in body of module; reorder to top - она возникает, когда пытаешься объявить переменную между импортами(а через lazy мы по сути объявляем переменные, поэтому их в конец)
+
+// Как можно выложить fullstack(react+node.js) приложение бесплатно?
+// с помощью сервиса render выкладываем node.js
+// с помощью сервиса vercel/gh-pages выкладываем react приложение
+
 
 function App(props) {
     const dispatch = useDispatch();
 
-    useEffect(() => 
-        () => {
-            dispatch(me)
-    }, [dispatch]);
+    useEffect(
+        () => () => {
+            dispatch(me);
+        },
+        [dispatch]
+    );
 
-    if(!props.isInitialized) return <Preloader />
+    if (!props.isInitialized) return <Preloader />;
 
     return (
         <Router>
@@ -76,29 +88,35 @@ function App(props) {
                 <HeaderContainer notAuthClassName={s.header} />
                 {props.isAuth && <NavBarContainer />}
                 <div className={s.content}>
-                    <Routes>
-                        <Route path="/" element={<ProfileContainer />} />
-                        <Route path="/profile" element={<ProfileContainer />} />
-                        <Route
-                            path="/profile/:userId"
-                            element={<ProfileContainer />}
-                        />
-                        <Route path="/news" element={<News />} />
-                        <Route
-                            path="/messages/*"
-                            element={<DialogsContainer />}
-                        />
-                        <Route path="/music" element={<Music />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/users" element={<UsersContainer />} />
-                        <Route path="/login" element={<LoginContainer />} />
-                        <Route
-                            path="/registration"
-                            element={<RegistrationContainer />}
-                        />
+                    <React.Suspense fallback={<Preloader />}>
+                        <Routes>
+                            <Route path="/" element={<ProfileContainer />} />
+                            <Route
+                                path="/profile"
+                                element={<ProfileContainer />}
+                            />
+                            <Route
+                                path="/profile/:userId"
+                                element={<ProfileContainer />}
+                            />
+                            <Route path="/news" element={<News />} />
+                            <Route
+                                path="/messages/*"
+                                element={<DialogsContainer />}
+                            />
+                            <Route path="/music" element={<Music />} />
+                            <Route path="/settings" element={<Settings />} />
 
-                        <Route path="*" element={<Error />} />
-                    </Routes>
+                            <Route path="/users" element={<UsersContainer />} />
+
+                            <Route path="/login" element={<LoginContainer />} />
+                            <Route
+                                path="/registration"
+                                element={<RegistrationContainer />}
+                            />
+                            <Route path="*" element={<Error />} />
+                        </Routes>
+                    </React.Suspense>
                 </div>
             </div>
         </Router>
@@ -107,7 +125,7 @@ function App(props) {
 
 const mapStateToProps = (state) => ({
     isInitialized: getIsInitialized(state),
-    isAuth: getIsAuth(state)
-})
+    isAuth: getIsAuth(state),
+});
 
 export default connect(mapStateToProps, null)(App);

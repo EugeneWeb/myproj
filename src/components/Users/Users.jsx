@@ -10,18 +10,25 @@ const Users = (props) => {
 
             <ul className={s.users__items}>
                 {props.users.map((user) => (
-                    <User key={user._id} user={user} currentUser={props.currentUser} followingInProgress={props.followingInProgress} unfollow={props.unfollow} follow={props.follow}/>
+                    <User
+                        key={user._id}
+                        user={user}
+                        currentUser={props.currentUser}
+                        followingInProgress={props.followingInProgress}
+                        unfollow={props.unfollow}
+                        follow={props.follow}
+                    />
                 ))}
             </ul>
 
             <Paginator
-                pages={props.pages}
+                totalItemsCount={props.totalCount}
+                perPage={props.perPage}
                 currentPage={props.currentPage}
                 onChangePage={props.onChangePage}
             />
         </div>
     );
 };
-
 
 export default Users;
