@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom'
 import socialSvg from './img/icons/social network_icon.svg'
 import s from './Header.module.css'
 
-const Header = ({isAuth, setLogout, currentUser}) => {
+const Header = ({isAuth, setLogout, currentUser, notAuthClassName}) => {
     return (
-        <header className={s.header}>
+        <header className={isAuth ? s.header : `${s.header} ${notAuthClassName}`}>
             <div className={s.logo}>
                 <NavLink to="/" className={s.logo__link}>
                     <img src={socialSvg} alt="Логотип сайта" />

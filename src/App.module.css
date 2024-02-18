@@ -33,7 +33,23 @@ dd {
   margin-left: 0;
 }
 
-.wrap {
+.wrapNotAuth {
+    display: grid;
+    grid-template-areas: "header header"
+                         "content content";
+    grid-template-rows: 120px 1fr;
+    gap: 20px;
+
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.header {
+    margin-bottom: 50px;
+}
+
+.wrapAuth {
     display: grid;
     grid-template-areas: "header header"
                          "navbar content";

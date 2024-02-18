@@ -20,34 +20,45 @@ import { me } from "./redux/authReducer";
 import NavBarContainer from "./components/NavBar/NavBarContainer";
 import Preloader from "./components/common/Preloader/Preloader";
 import { getIsInitialized } from "./redux/app-selectors";
+import { getIsAuth } from "./redux/auth-selectors";
 
-//redux-ducks это, доработка, связанная с константами(какие проблемы могут возникнуть), изменения .then на async в reducer'ах, try{} catch(){}, добавил логику отправки аватарок и обой с сервера, updateObjectInArray, деструктуризация пропсов, отличие url от uri, более продвинутая деструктуризация, Вынес пагинатор в общие компоненты, добавил компоненту User, Как безопаснее всего пользоваться компьютером других людей? Деструктуризация this.props
-// redux-ducks - методология для структурирования кода(подход к организации) reducer'ов и связанных с ними элементов, который основывается на том, что все элементы, связанные с reducer'ом(action контстанты, action creator, thunk, thunk creator) следует держать в одном файле вместе с reducer'ом(один такой файл именуется ducks)
+// Добавления расширения redux devtools, для чего нужен, что такое браузерные расширения, Тест компонент(ошибка с axios, рендер App компоненты, что нужно для тестирования компоненты, Как сделать группы тестов, Библиотека для тестирования react компонентов(что использовать вместо неё))
+// нужен для того, чтобы отслеживать изменения state'а, отправленные action'ы, изменения(diff)
+// С помощью jump можем отматывать на предыдущие состояния state'а и в связке с react developer tools смотреть изменения пропсов и state'ов
 
-// доработка, связанная с константами(какие проблемы могут возникнуть)
-// в нашем приложении action типы(константы) именуются в каждом reducer'e не конкретизированно(в них не содержится названия reducer'a), это может выливаться в ошибку, когда новый разработчик, не знающий название уже существующих типов начинает использовать зарезервированные типы, ТО будут срабатывать несколько case'ов и это может приводить к неопределенному поведению программы
-// у нас: const ADD_POST = "ADD-POST";
-// Следует так: const ADD_POST = "/prodile/ADD-POST";
-// Названия action'ов должны быть уникальными
+// Заходим в документацию, находим advanced store setup(так как используем middleware)
+// глобальный window.store можем убрать
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const store = legacy_createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
 
-// добавил логику отправки аватарок и обой с сервера
-// c помощью динамической составляющей в url(т.е /images/:imageName и отдаём запрашиваемый файл)
+// что такое браузерные расширения
+// Браузерные расширения - это js код, который может присоединяться к странице и брать из неё информацию, работает как js, который был подключен со стороны(нужно скачивать с умом, так как могут воровать персональные данные)
+// javascript код, которому мы разрешили выполняться на любой нашей странице(+ иногда ещё html/css)
+// имеют доступ к DOM и другим данным(пользователь выбирает сам какие данные может изменять то или иное расширение)
 
-// деструктуризация пропсов
-// Для улучшения читабельности и уменьшения кода
 
-// отличие url от uri
-// url - это идентификатор сервера в сети
-// uri - это индентификатор ресурса на сервере
+// Тест компонент(ошибка с axios, рендер App компоненты, что нужно для тестирования компоненты)
+// Для того, чтобы исправить ошибку с axios добавляем в конец в package.json:
+// "jest": {
+//     "moduleNameMapper": {
+//       "axios": "axios/dist/node/axios.cjs"
+//     }
+//   }
+// Так как рендер App компоненты требует объект Store, который мы получаем с помощью контекста через Provider, мы создаём новую компоненту AppContainer, кот-я включает Provider и App, тестируем AppContainer компоненту на рендер 
 
-// более продвинутая деструктуризация
-// ({ input, meta:{touched, error}, className, ...props })
+// что нужно для тестирования компоненты
+// Для тестирования компоненты нам нужно её отрендерить и посмотреть значения пропсов/внутренние элементы
 
-// Как безопаснее всего пользоваться компьютером других людей?
-// Через режим гостя, не сохраняются куки
+// Как сделать группы тестов
+// describe('dsf',(arguments) => {
+//     it('', (arguments) => {
+        
+//     })  
+// })
 
-// Деструктуризация this.props
-// В методах и функциях желательно(чтобы обезопасить себя от лишних ошибок, кот-е могут возникнуть) всегда деструктрузировать this.props и вытаскивать нужные нам значения)
+// Библиотека для тестирования react компонентов
+// npm i -D react-test-renderer@версия react - данная библиотека позволяет рендерить(преобразовывать) компоненты в нативные js объекты
+// Библиотека устарела, вместо неё используется react-testing-library
 
 function App(props) {
     const dispatch = useDispatch();
@@ -61,9 +72,9 @@ function App(props) {
 
     return (
         <Router>
-            <div className={s.wrap}>
-                <HeaderContainer />
-                <NavBarContainer />
+            <div className={props.isAuth ? s.wrapAuth : s.wrapNotAuth}>
+                <HeaderContainer notAuthClassName={s.header} />
+                {props.isAuth && <NavBarContainer />}
                 <div className={s.content}>
                     <Routes>
                         <Route path="/" element={<ProfileContainer />} />
@@ -95,7 +106,8 @@ function App(props) {
 }
 
 const mapStateToProps = (state) => ({
-    isInitialized: getIsInitialized(state)
+    isInitialized: getIsInitialized(state),
+    isAuth: getIsAuth(state)
 })
 
 export default connect(mapStateToProps, null)(App);

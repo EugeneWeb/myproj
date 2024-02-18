@@ -1,4 +1,4 @@
-import { legacy_createStore, combineReducers, applyMiddleware } from "redux";
+import { legacy_createStore, combineReducers, applyMiddleware, compose } from "redux";
 import profileReducer from "./profile-reducer";
 import dialogsReducer from "./dialogs-reducer";
 import navbarReducer from "./navbar-reducer";
@@ -20,8 +20,11 @@ const reducers = combineReducers({
     form: FormReducer
 })
 
-const store = legacy_createStore(reducers, applyMiddleware(thunk))
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = legacy_createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
 
-window.store = store
+// const store = legacy_createStore(reducers, applyMiddleware(thunk))
+
+// window.store = store
 
 export default store

@@ -224,7 +224,7 @@ export const me = async (dispatch) => {
         dispatch(setInitialized());
     } catch (error) {
         dispatch(setInitialized());
-        console.log(error);
+        // console.log(error);
         localStorage.removeItem("token");
     }
 };
