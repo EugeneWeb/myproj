@@ -1,6 +1,7 @@
 const SEND_MESSAGE = "/dialogs/SEND-MESSAGE";
 const UPDATE_NEW_MESSAGE_BODY = "/dialogs/UPDATE-NEW-MESSAGE-BODY";
 
+
 let initialState = {
     dialogs: [
         { id: 1, name: "Андрей", path: "http://localhost:5000/avatar/avatar1.svg" },
@@ -26,7 +27,7 @@ let initialState = {
     newMessageBody: 'Введите новое сообщение...'
 }
 
-const dialogsReducer = (state = initialState, action) => {
+const dialogsReducer = (state = initialState, action: ActionsType) => {
 
     switch (action.type) {
         case SEND_MESSAGE:
@@ -50,13 +51,19 @@ const dialogsReducer = (state = initialState, action) => {
     }
 };
 
-export const sendMessage = (newMessageBody) => ({
+type SendMessageType = ReturnType<typeof sendMessage>
+export const sendMessage = (newMessageBody: string) => ({
     type: SEND_MESSAGE,
     newMessageBody
-});
-export const updateNewMessageBodyCreator = (body) => ({
+} as const);
+type UpdateNewMessageBodyCreatorType = ReturnType<typeof updateNewMessageBodyCreator>
+export const updateNewMessageBodyCreator = (body: string) => ({
     type: UPDATE_NEW_MESSAGE_BODY,
     newMessageBody: body,
-});
+} as const);
 
 export default dialogsReducer;
+
+export type InitialStateType = typeof initialState
+export type ActionsType = SendMessageType | UpdateNewMessageBodyCreatorType
+

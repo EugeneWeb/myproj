@@ -10,8 +10,11 @@ const initialState = {
     ]
 }
 
-const navbarReducer = (state = initialState, action) => {
+const navbarReducer = (state = initialState, action: ActionsType) => {
     return state
 }
 
 export default navbarReducer
+
+export type InitialStateType = typeof initialState
+type ActionsType = {}

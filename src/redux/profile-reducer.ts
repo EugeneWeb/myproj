@@ -1,3 +1,5 @@
+import { ProfileType } from "types/types";
+
 const ADD_POST = "/profile/ADD-POST";
 const SET_USERS_PROFILE = "/profile/SET_USERS_PROFILE";
 const SET_PROFILE_STATUS = "/profile/SET_PROFILE_STATUS";
@@ -16,10 +18,10 @@ const initialState = {
             likesCount: 101,
         },
     ],
-    profile: null,
+    profile: null as ProfileType,
 };
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = (state = initialState, action: ActionsType) => {
     switch (action.type) {
         case DELETE_POST:
             return {
@@ -56,22 +58,28 @@ const profileReducer = (state = initialState, action) => {
     }
 };
 
-export const addPost = (postText) => ({
+type AddPostType = ReturnType<typeof addPost>
+export const addPost = (postText: string) => ({
     type: ADD_POST,
     postText
-});
-export const deletePost = (postId) => ({
+} as const);
+type DeletePostType = ReturnType<typeof deletePost>
+export const deletePost = (postId: number) => ({
     type: DELETE_POST,
     postId
-});
-
-export const setUsersProfile = (profile) => ({
+} as const);
+type SetUserProfileType = ReturnType<typeof setUsersProfile>
+export const setUsersProfile = (profile: ProfileType) => ({
     type: SET_USERS_PROFILE,
     profile,
-});
-export const setProfileStatus = (status) => ({
+} as const);
+type SetProfileStatusType = ReturnType<typeof setProfileStatus>
+export const setProfileStatus = (status: string) => ({
     type: SET_PROFILE_STATUS,
     status,
-});
+} as const);
 
 export default profileReducer;
+
+export type InitialStateType = typeof initialState
+type ActionsType = SetProfileStatusType | SetUserProfileType | DeletePostType | AddPostType

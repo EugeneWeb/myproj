@@ -2,8 +2,16 @@ import { NavLink } from 'react-router-dom'
 
 import socialSvg from './img/icons/social network_icon.svg'
 import s from './Header.module.css'
+import { ProfileType } from 'types/types'
+import { FC } from 'react'
 
-const Header = ({isAuth, setLogout, currentUser, notAuthClassName}) => {
+type PropsType = {
+    isAuth: boolean
+    setLogout: () => void
+    currentUser: ProfileType
+    notAuthClassName: string
+}
+const Header: FC<PropsType> = ({isAuth, setLogout, currentUser, notAuthClassName}) => {
     return (
         <header className={isAuth ? s.header : `${s.header} ${notAuthClassName}`}>
             <div className={s.logo}>

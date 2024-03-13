@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import s from "./Paginator.module.css";
 
-export const Paginator = ({
+type PropsType = {
+    totalItemsCount: number,
+    perPage: number,
+    currentPage: number,
+    onChangePage: (pageNum: number) => void,
+    portionSize: number,
+}
+export const Paginator: FC<PropsType> = ({
     totalItemsCount,
     perPage,
     currentPage,
@@ -10,7 +17,7 @@ export const Paginator = ({
 }) => {
     // Вычитаем одного из totalItemsCount, потому что себя не считаем
     const pagesCount = Math.ceil(totalItemsCount / perPage);
-    const pages = [];
+    const pages = [] as number[];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }

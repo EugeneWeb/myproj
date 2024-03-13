@@ -8,6 +8,7 @@ import { Field, reduxForm } from "redux-form";
 import { maxLength } from "../../utils/validators";
 import { Textarea } from "../common/FormControls/FormControls";
 
+
 const Dialogs = ({sendMessage, dialogs, messages}) => {
 
     const onSubmit = (formData) => {

@@ -7,6 +7,7 @@ import {
 } from "./users-reducer";
 import { setInitialized } from "./appReducer";
 import { updateObjectInArray } from "../utils/object-helpers";
+import { ProfileType } from "types/types";
 
 const SET_USER = "/auth/SET_USER";
 const LOGOUT = "/auth/LOGOUT";
@@ -15,15 +16,17 @@ const FOLLOW = "/auth/FOLLOW";
 const UNFOLLOW = "/auth/UNFOLLOW";
 const SET_STATUS = "/auth/SET_STATUS";
 
+
+// currentUser - ProfileType
 const initialState = {
-    currentUser: {},
+    currentUser: {} as ProfileType,
     isAuth: false,
     isRegistered: false,
 };
 
 
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: ActionsType) => {
     switch (action.type) {
         case FOLLOW:
             return {
@@ -75,27 +78,38 @@ const authReducer = (state = initialState, action) => {
     }
 };
 
-export const setUser = (user) => ({
+type SetUserType = ReturnType<typeof setUser>
+export const setUser = (user: ProfileType) => ({
     type: SET_USER,
     user,
-});
+} as const);
+type SetLogoutType = ReturnType<typeof setLogout>
 export const setLogout = () => ({
     type: LOGOUT,
-});
-export const setIsRegistered = (isRegistered) => ({
+} as const);
+type SetIsRegisteredType = ReturnType<typeof setIsRegistered>
+export const setIsRegistered = (isRegistered: boolean) => ({
     type: SET_IS_REGISTERED,
     isRegistered,
-});
-export const followSuccess = (userId) => ({
+} as const);
+type FollowSuccessType = ReturnType<typeof followSuccess>
+export const followSuccess = (userId: string) => ({
     type: FOLLOW,
     userId,
-});
-export const unfollowSuccess = (userId) => ({
+} as const);
+type UnfollowSuccessType = ReturnType<typeof unfollowSuccess>
+export const unfollowSuccess = (userId: string) => ({
     type: UNFOLLOW,
     userId,
-});
+} as const);
 
-export const loginUser = (login, password) => async (dispatch) => {
+type SetStatusType = ReturnType<typeof setStatus>
+export const setStatus = (status: string) => ({
+    type: SET_STATUS,
+    status,
+} as const);
+
+export const loginUser = (login: string, password: string) => async (dispatch: any) => {
     try {
         const userAuth = await usersAPI.login(login, password);
 
@@ -120,7 +134,7 @@ export const loginUser = (login, password) => async (dispatch) => {
 };
 
 export const userRegistration =
-    (username, email, password) => async (dispatch) => {
+    (username: string, email: string, password: string) => async (dispatch: any) => {
         try {
             await dispatch(setIsRegistered(false));
             const regObj = await usersAPI.registration(
@@ -164,7 +178,7 @@ const followUnfollowFlow = async (
     } catch (error) {}
 };
 
-export const unfollow = (userId) => (dispatch) => {
+export const unfollow = (userId: string) => (dispatch: any) => {
     const apiMethod = usersAPI.unfollow.bind(usersAPI);
     followUnfollowFlow(dispatch, userId, apiMethod, unfollowSuccess);
     // try {
@@ -190,7 +204,7 @@ export const unfollow = (userId) => (dispatch) => {
     // });
 };
 
-export const follow = (userId) => (dispatch) => {
+export const follow = (userId: string) => (dispatch: any) => {
     const apiMethod = usersAPI.follow.bind(usersAPI);
     followUnfollowFlow(dispatch, userId, apiMethod, followSuccess);
     // try {
@@ -216,7 +230,7 @@ export const follow = (userId) => (dispatch) => {
     // });
 };
 
-export const me = async (dispatch) => {
+export const me = async (dispatch: any) => {
     try {
         const resp = await authAPI.me();
 
@@ -229,12 +243,7 @@ export const me = async (dispatch) => {
     }
 };
 
-export const setStatus = (status) => ({
-    type: SET_STATUS,
-    status,
-});
-
-export const getStatus = (status) => async (dispatch) => {
+export const getStatus = (status: string) => async (dispatch: any) => {
     try {
         const resp = await profileAPI.updateStatus(status);
 
@@ -253,3 +262,12 @@ export const getStatus = (status) => async (dispatch) => {
 };
 
 export default authReducer;
+
+export type InitialStateType = typeof initialState
+type ActionsType =  SetUserType 
+| SetLogoutType 
+| SetIsRegisteredType 
+| FollowSuccessType
+| UnfollowSuccessType 
+| SetStatusType 
+

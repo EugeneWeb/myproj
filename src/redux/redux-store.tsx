@@ -19,7 +19,9 @@ const reducers = combineReducers({
     app: appReducer,
     form: FormReducer
 })
+export type AppStateType = ReturnType<typeof reducers>
 
+//@ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = legacy_createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
 

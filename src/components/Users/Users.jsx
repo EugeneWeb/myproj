@@ -3,6 +3,7 @@ import React from "react";
 import { Paginator } from "../common/Paginator/Paginator";
 import User from "./User/User";
 
+
 const Users = (props) => {
     return (
         <div className={`${s.users} ${props.isFetching ? s.hidden : null}`}>

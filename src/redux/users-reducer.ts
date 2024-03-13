@@ -1,3 +1,4 @@
+import { UserType } from "types/types";
 import { profileAPI, usersAPI } from "../api/api";
 import { setUsersProfile } from "./profile-reducer";
 
@@ -9,15 +10,15 @@ const SET_FOLLOWING_IN_PROGRESS = "/users/SET_FOLLOWING_IN_PROGRESS";
 const DELETE_FOLLOWING_IN_PROGRESS = "/users/DELETE_FOLLOWING_IN_PROGRESS";
 
 const initialState = {
-    users: [],
+    users: [] as UserType[],
     currentPage: 1,
     totalCount: 0,
     perPage: 4,
     isFetching: false,
-    followingInProgress: [],
+    followingInProgress: [] as string[], //Array of users ids
 };
 
-const usersReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action: ActionsType) => {
     switch (action.type) {
         case SET_USERS:
             return {
@@ -60,32 +61,38 @@ const usersReducer = (state = initialState, action) => {
     }
 };
 
+type SetUsersType = ReturnType<typeof setUsers>
 export const setUsers = (users) => ({
     type: SET_USERS,
     users,
-});
+} as const);
+type SetUsersTotalCountType = ReturnType<typeof setUsersTotalCount>
 export const setUsersTotalCount = (totalCount) => ({
     type: SET_USERS_TOTAL_COUNT,
     totalCount,
-});
+} as const);
+type SetCurrentPageType = ReturnType<typeof setCurrentPage>
 export const setCurrentPage = (currentPage) => ({
     type: SET_CURRENT_PAGE,
     currentPage,
-});
+} as const);
+type SetIsFetchingType = ReturnType<typeof setIsFetching>
 export const setIsFetching = (isFetching) => ({
     type: SET_ISFETCHING,
     isFetching,
-});
+} as const);
+type SetFollowingInProgressType = ReturnType<typeof setFollowingInProgress>
 export const setFollowingInProgress = (userId) => ({
     type: SET_FOLLOWING_IN_PROGRESS,
     userId,
-});
+} as const);
+type DeleteFollowingInProgressType = ReturnType<typeof deleteFollowingInProgress>
 export const deleteFollowingInProgress = (userId) => ({
     type: DELETE_FOLLOWING_IN_PROGRESS,
     userId,
-});
+} as const);
 
-export const requestUsers = (perPage, currentPage) => async (dispatch) => {
+export const requestUsers = (perPage: number, currentPage: number) => async (dispatch: any) => {
     try {
         await dispatch(setIsFetching(true));
         const resp = await usersAPI.getUsers(perPage, currentPage);
@@ -107,7 +114,7 @@ export const requestUsers = (perPage, currentPage) => async (dispatch) => {
     // });
 };
 
-export const requestProfile = (userId) => async (dispatch) => {
+export const requestProfile = (userId: string) => async (dispatch: any) => {
     try {
         const profiles = await profileAPI.setProfile(userId);
         dispatch(setUsersProfile(profiles));
@@ -119,3 +126,11 @@ export const requestProfile = (userId) => async (dispatch) => {
 };
 
 export default usersReducer;
+
+export type InitialStateType = typeof initialState
+type ActionsType =  SetUsersType |
+SetUsersTotalCountType |
+SetCurrentPageType |
+SetIsFetchingType |
+SetFollowingInProgressType |
+DeleteFollowingInProgressType 
