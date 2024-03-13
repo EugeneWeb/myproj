@@ -1,6 +1,8 @@
+import { FC } from 'react'
 import s from './Settings.module.css'
 
-const Settings = () => {
+type PropsType = {}
+const Settings: FC<PropsType> = () => {
     return (
         <div>
             <h1>Settings</h1>

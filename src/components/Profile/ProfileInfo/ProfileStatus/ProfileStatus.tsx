@@ -1,8 +1,12 @@
-import React, { Component, useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
+import * as React from 'react'
 import s from './ProfileStatus.module.css'
 
-
-const ProfileStatus = ({status, getStatus}) => {
+type PropsType = {
+    status: string,
+    getStatus: (status: string) => void 
+}
+const ProfileStatus: React.FC<PropsType> = ({status, getStatus}) => {
     const [editMode, setEditMode] = useState(false)
     const [localStatus, setLocalStatus] = useState(status)
 

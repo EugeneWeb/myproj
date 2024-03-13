@@ -25,4 +25,7 @@ export type UserType = {
     posts_id: string[];
 };
 
-
+export type FriendType = {
+    name: string;
+    path: string;
+};

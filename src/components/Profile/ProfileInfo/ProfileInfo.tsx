@@ -1,7 +1,14 @@
+import { ProfileType } from 'types/types'
 import s from './ProfileInfo.module.css'
 import ProfileStatus from './ProfileStatus/ProfileStatus'
+import { FC } from 'react'
 
-const ProfileInfo = ({profile, getStatus}) => {
+
+type PropsType = {
+    profile: ProfileType,
+    getStatus: (status: string) => void
+}
+const ProfileInfo: FC<PropsType> = ({profile, getStatus}) => {
     return (
         <div>
             <div className={s.bg}>

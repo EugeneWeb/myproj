@@ -1,8 +1,12 @@
 import { NavLink } from "react-router-dom";
 import s from "./NavBar.module.css";
 import FriendsContainer from "./Friends/FriendsContainer";
+import { FC } from "react";
 
-const NavBar = ({isAuth}) => {
+type PropsType = {
+    isAuth: boolean
+}
+const NavBar: FC<PropsType> = ({isAuth}) => {
     
     return (
         <aside className={s.navbar}>

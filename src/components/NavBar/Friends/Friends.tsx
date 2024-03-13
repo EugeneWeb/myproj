@@ -1,7 +1,12 @@
+import { FriendType } from "types/types";
 import Friend from "./Friend/Friend";
 import s from "./Friends.module.css";
+import { FC } from "react";
 
-const Friends = ({friends}) => {
+type PropsType = {
+    friends: FriendType[]
+}
+const Friends: FC<PropsType> = ({friends}) => {
     return (
         <div className={s.friends}>
             <h3 className={s.friends__title}>Друзья</h3>

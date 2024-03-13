@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import WithRouter from '../common/WithRouter/WithRouter'
 import { connect } from 'react-redux'
 import Profile from './Profile'
@@ -9,8 +9,20 @@ import { compose } from 'redux'
 import { getStatus } from '../../redux/authReducer'
 import { getCurrentUser } from '../../redux/auth-selectors'
 import { getProfile } from '../../redux/profile-selectors'
+import { AppStateType } from '@redux/redux-store'
+import { Params } from 'react-router-dom'
+import { ProfileType } from 'types/types'
 
-class ProfileContainer extends React.Component {
+type MapStatePropsType = ReturnType<typeof mapStateToProps>
+type MapDispatchPropsType = typeof MDTP
+type OwnPropsType = {
+    params: Readonly<Params<string>>
+    isAuth: boolean
+}
+
+type PropsType = MapStatePropsType & OwnPropsType & MapDispatchPropsType
+
+class ProfileContainer extends React.Component<PropsType> {
 
     componentDidMount() {
         const userId = this.props.params.userId
@@ -37,13 +49,15 @@ class ProfileContainer extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    profile: getProfile(state),
+const mapStateToProps = (state: AppStateType) => ({
+    profile: getProfile(state) as ProfileType,
     currentUser: getCurrentUser(state)
 })
 
-export default compose(
-    connect(mapStateToProps, { requestProfile, setUsersProfile, getStatus }),
+const MDTP = { requestProfile, setUsersProfile, getStatus }
+
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, MDTP),
     withAuthRedirect,
     WithRouter
 )(

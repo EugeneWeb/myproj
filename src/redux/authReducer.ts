@@ -8,6 +8,8 @@ import {
 import { setInitialized } from "./appReducer";
 import { updateObjectInArray } from "../utils/object-helpers";
 import { ProfileType } from "types/types";
+import { ThunkAction } from "redux-thunk";
+import { AppStateType } from "./redux-store";
 
 const SET_USER = "/auth/SET_USER";
 const LOGOUT = "/auth/LOGOUT";
@@ -134,7 +136,7 @@ export const loginUser = (login: string, password: string) => async (dispatch: a
 };
 
 export const userRegistration =
-    (username: string, email: string, password: string) => async (dispatch: any) => {
+    (username: string, email: string, password: string): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType | ReturnType<typeof stopSubmit>> => (async (dispatch) => {
         try {
             await dispatch(setIsRegistered(false));
             const regObj = await usersAPI.registration(
@@ -159,7 +161,7 @@ export const userRegistration =
         //         dispatch(stopSubmit("registration", { _error: regObj.message }));
         //     }
         // });
-    };
+    });
 
 const followUnfollowFlow = async (
     dispatch,

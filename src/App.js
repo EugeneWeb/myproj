@@ -27,82 +27,55 @@ const UsersContainer = React.lazy(() =>
     import("./components/Users/UsersContainer")
 );
 
-// Для чего используется двойное отрицание?
-// Установка ts в существующий проект react, как гуглить
-// Как закрыть вкладку в браузере, не нажимая на крестик, как убрать проблему в ts, связанную с путями в файлах, типизация классовых/функциональных компонент
-// Исправление ошибки с jsx
-// Исправление ошибки с модулями
-// Исправление ошибки с svg
-// Типизация redux store, селекторов
-
-
-
-// Установка ts в существующий проект react, как гуглить
-// гуглим запрос: installation react typescript
-// На сайте react получаем команду:
-// npm install --save typescript @types/node @types/react @types/react-dom @types/jest
-
-// Для чего используется двойное отрицание?
-// используется для преобразование в boolean не boolean значения:
-// например, 5, мы хотим преобразовать в эквивалент boolean, для этого мы пишем !!5 , т.е сначало !5 преобразовывает в false и !false - это true
-
-// Как закрыть вкладку в браузере, не нажимая на крестик
-// С помощью колесика мыши
-
-// как убрать проблему в ts, связанную с путями в файлах
-// Для этого нужно добавить в корень react проекта tsconfig с baseUrl: './src'
-// {
-//     "compilerOptions": {
-//       "baseUrl": "./src",
-//       "paths": {
-//         "@redux/*": ["redux/*"]
-//       }
-//     }
-//   }
-
-// Исправление ошибки с jsx
-// Добавляем jsx:preserve
-// {
-//     "compilerOptions": {
-//       "baseUrl": "./src",
-//       "jsx": "react",
-//       "paths": {
-//         "@redux/*": ["redux/*"]
-//       }
-//     }
-//   }
-
-// Исправление ошибки с модулями
-// Создаем typing.d.ts, где говорим ts, что у нас есть файлы module.css
-// declare module "*.module.css";
-
-// Исправление ошибки с svg
-// declare module "*.svg" {
-//     const content: any;
-//     export default content;
-//   }
-
-// типизация классовых/функциональных компонент
-// Функциональные:
-// type PropsType = {}
-// const Comp: FC<PropsType, StateType(если есть)> = () => {
-//     return <div></div>
-// }
-// Классовые:
-// type PropsType = {}
-// class Comp extends React.Component<PropsType, StateType(если есть)>{}
-
-// Типизация redux store, селекторов
-// Так как функция combineReducer возвращает корневой reducer(rootReducer), возвращающий весь state, то мы можем получить тип всего state'а c помощью returnType
-// Для остального используем
-//@(собака)ts-ignore - Важно! вначале обязатель комментарий // - с помощью этого мы говорим ts компилятору игнорировать всё после строчки ts-ignore
-
-// Для типизации селекторов просто прописываем тип state:AppStateType, возвращаемый тип будет подхватываться ts компилятором
+// Типизация connect(контейнерных компонент), как посмотреть принимаемые джененериком типы
+// Как исправить проблему с импортом React(2 способа)
+// Типизация compose
+// Типизация хуков
+// Как узнать тип любой переменной(на примере возвращаемого значения useParams)
+// Как легко задать тип для e(event)
+// Типизация LoginContainer и RegistrationContainer, ПОДВОХ
 
 
 
 
+// Типизация connect(контейнерных компонент)
+// Для этого разбиваем PropsType на MapStatePropsType, MapDispatchPropsType, OwnPropsType
+// т.е на пропсы, которые пришли из MSTP, MDTP и на OwnPropsType, которые получает компонента через атрибуты(<Component users={users} />)
+// Далее пишем
+// connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>()()
+// т.е connect - дженерик
 
+// как посмотреть принимаемые джененериком типы
+// Просто нажимаем ctrl+click и смотрим(например, для connect)
+
+// Как исправить проблему с импортом React(2 способа)
+// Для этого используем след. синтаксис:
+// import * as React from 'react'; - лучше этот
+// Или добавляем в tsconfig:
+//"esModuleInterop": true
+
+// Типизация compose
+// compose<React.ComponentType>(
+//     connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, MDTP),
+//     withAuthRedirect
+// )(UsersContainer)
+
+// Типизация хуков
+// Как правило, все хуки являются дженерик функциями, поэтому можем писать принимаемый тип так(при этом если указываем начальное значение, то типизировать необязательно):
+// useState(1)
+// useState<number | null>(null)
+
+// Как узнать тип любой переменной(на примере возвращаемого значения useParams)
+// Просто объявляем переменную любого типа, например, number(заведомо зная, что это неправильный тип) и смотрим ошибку, в которой написан правильный тип:
+// const n: number = useParams()
+// Узнали тип:
+// params: Readonly<Params<string>>
+
+// Как легко задать тип для e(event)
+// Также как и с useParams, просто объявляем неправильный тип для e
+
+// Типизация LoginContainer и RegistrationContainer, ПОДВОХ
+// Подвох заключается в типах ThunkCreator функкциях: userRegistration и loginUser, которые возвращают void(если писать, что возвращают ThunkAction или Promise<void> - ошибка)
 
 function App(props) {
     const dispatch = useDispatch();

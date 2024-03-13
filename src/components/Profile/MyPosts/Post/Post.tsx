@@ -1,7 +1,13 @@
+import { FC } from 'react'
 import s from './Post.module.css'
 import likeIcon from './img/like_icon.svg'
 
-const Post = ({path, text, likesCount}) => {
+type PropsType = {
+    path: string
+    text: string
+    likesCount: number
+}
+const Post: FC<PropsType> = ({path, text, likesCount}) => {
     return (
         <div className={s.post}>
             <div className={s.img__wrap}>

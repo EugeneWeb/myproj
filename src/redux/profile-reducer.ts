@@ -69,7 +69,7 @@ export const deletePost = (postId: number) => ({
     postId
 } as const);
 type SetUserProfileType = ReturnType<typeof setUsersProfile>
-export const setUsersProfile = (profile: ProfileType) => ({
+export const setUsersProfile = (profile: ProfileType | {}) => ({
     type: SET_USERS_PROFILE,
     profile,
 } as const);

@@ -2,8 +2,14 @@ import s from './Profile.module.css'
 import MyPostsContainer from './MyPosts/MyPostsContainer'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import Preloader from '../common/Preloader/Preloader'
+import { ProfileType } from 'types/types'
+import { FC } from 'react'
 
-const Profile = ({profile, getStatus}) => {
+type PropsType = {
+    profile: ProfileType,
+    getStatus: (status: string) => void
+}
+const Profile: FC<PropsType> = ({profile, getStatus}) => {
     
     if(!profile) {
         return <Preloader />

@@ -1,6 +1,11 @@
+import { FC } from "react";
 import s from "./Friend.module.css";
 
-const Friend = ({path, name}) => {
+type PropsType = {
+    path: string
+    name: string
+}
+const Friend: FC<PropsType> = ({path, name}) => {
     return (
         <div className={s.friend}>
             <div className={s.img__wrap}>
