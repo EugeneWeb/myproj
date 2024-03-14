@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 // import StoreContext from '../../../StoreContext'
-import { addPost } from '../../../redux/profile-reducer'
+import { profileActions } from '../../../redux/profile-reducer'
 import MyPosts from './MyPosts'
 import { getPosts } from '../../../redux/profile-selectors'
 import { AppStateType } from '@redux/redux-store'
@@ -15,7 +15,7 @@ type OwnPropsType = {}
 type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 
 const MDTP = {
-    addPost
+    addPost: profileActions.addPost
 }
 
 const MyPostsContainer = connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, MDTP)(MyPosts)

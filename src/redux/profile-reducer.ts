@@ -1,9 +1,7 @@
 import { ProfileType } from "types/types";
+import { InferActionsType } from "./redux-store";
 
-const ADD_POST = "/profile/ADD-POST";
-const SET_USERS_PROFILE = "/profile/SET_USERS_PROFILE";
-const SET_PROFILE_STATUS = "/profile/SET_PROFILE_STATUS";
-const DELETE_POST = '/profile/DELETE_POST'
+
 
 const initialState = {
     posts: [
@@ -21,14 +19,16 @@ const initialState = {
     profile: null as ProfileType,
 };
 
-const profileReducer = (state = initialState, action: ActionsType) => {
+const profileReducer = (state = initialState, action: ProfileActionsType) => {
     switch (action.type) {
-        case DELETE_POST:
+        case '/profile/DELETE_POST':
             return {
                 ...state,
-                posts: state.posts.filter((value, index) => action.postId !== index)
-            }
-        case ADD_POST:
+                posts: state.posts.filter(
+                    (value, index) => action.postId !== index
+                ),
+            };
+        case '/profile/ADD-POST':
             const newPost = {
                 path: "http://localhost:5000/avatar/avatar1.svg",
                 text: action.postText,
@@ -40,12 +40,12 @@ const profileReducer = (state = initialState, action: ActionsType) => {
                 newPostText: "",
             };
 
-        case SET_USERS_PROFILE:
+        case '/profile/SET_USERS_PROFILE':
             return {
                 ...state,
                 profile: { ...action.profile },
             };
-        case SET_PROFILE_STATUS:
+        case '/profile/SET_PROFILE_STATUS':
             return {
                 ...state,
                 profile: {
@@ -58,28 +58,33 @@ const profileReducer = (state = initialState, action: ActionsType) => {
     }
 };
 
-type AddPostType = ReturnType<typeof addPost>
-export const addPost = (postText: string) => ({
-    type: ADD_POST,
-    postText
-} as const);
-type DeletePostType = ReturnType<typeof deletePost>
-export const deletePost = (postId: number) => ({
-    type: DELETE_POST,
-    postId
-} as const);
-type SetUserProfileType = ReturnType<typeof setUsersProfile>
-export const setUsersProfile = (profile: ProfileType | {}) => ({
-    type: SET_USERS_PROFILE,
-    profile,
-} as const);
-type SetProfileStatusType = ReturnType<typeof setProfileStatus>
-export const setProfileStatus = (status: string) => ({
-    type: SET_PROFILE_STATUS,
-    status,
-} as const);
+export const profileActions = {
+    addPost: (postText: string) =>
+        ({
+            type: "/profile/ADD-POST",
+            postText,
+        } as const),
+    deletePost: (postId: number) =>
+        ({
+            type:  "/profile/DELETE_POST",
+            postId,
+        } as const),
+        
+    setUsersProfile: (profile: ProfileType | {}) =>{
+        return ({
+            type: "/profile/SET_USERS_PROFILE",
+            profile,
+        } as const)
+    }
+        ,
+    setProfileStatus: (status: string) =>
+        ({
+            type: "/profile/SET_PROFILE_STATUS",
+            status,
+        } as const),
+};
 
-export default profileReducer;
+export default profileReducer
 
-export type InitialStateType = typeof initialState
-type ActionsType = SetProfileStatusType | SetUserProfileType | DeletePostType | AddPostType
+export type InitialStateType = typeof initialState;
+export type ProfileActionsType = InferActionsType<typeof profileActions>

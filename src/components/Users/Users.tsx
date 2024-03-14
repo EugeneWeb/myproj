@@ -3,7 +3,7 @@ import * as React from "react";
 import { Paginator } from "../common/Paginator/Paginator";
 import User from "./User/User";
 import { ProfileType, UserType } from "types/types";
-import { deleteFollowingInProgress, setFollowingInProgress } from "@redux/users-reducer";
+import { usersActions } from "@redux/users-reducer";
 
 type PropsType = {
     isFetching: boolean
@@ -16,8 +16,8 @@ type PropsType = {
     follow: (userId: string) => void
     unfollow: (userId: string) => void
     onChangePage: (pageNum: number) => void
-    deleteFollowingInProgress: typeof deleteFollowingInProgress
-    setFollowingInProgress: typeof setFollowingInProgress
+    deleteFollowingInProgress: typeof usersActions.deleteFollowingInProgress
+    setFollowingInProgress: typeof usersActions.setFollowingInProgress
 }
 const Users: React.FC<PropsType> = ({isFetching, users, currentUser, followingInProgress, setFollowingInProgress, deleteFollowingInProgress,
     follow, unfollow, totalCount, perPage, currentPage, onChangePage}) => {

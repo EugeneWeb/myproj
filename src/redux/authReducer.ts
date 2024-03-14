@@ -1,44 +1,34 @@
 import { stopSubmit } from "redux-form";
-import { authAPI, profileAPI, usersAPI } from "../api/api";
-import { setProfileStatus } from "./profile-reducer";
-import {
-    deleteFollowingInProgress,
-    setFollowingInProgress,
-} from "./users-reducer";
-import { setInitialized } from "./appReducer";
-import { updateObjectInArray } from "../utils/object-helpers";
+import { ResultCodesEnum} from "../api/api";
+import { ProfileActionsType, profileActions } from "./profile-reducer";
+import { UsersActionsType, usersActions } from "./users-reducer";
+import { AppActionsType, appActions } from "./appReducer";
 import { ProfileType } from "types/types";
-import { ThunkAction } from "redux-thunk";
-import { AppStateType } from "./redux-store";
-
-const SET_USER = "/auth/SET_USER";
-const LOGOUT = "/auth/LOGOUT";
-const SET_IS_REGISTERED = "/auth/SET_REGISTERED";
-const FOLLOW = "/auth/FOLLOW";
-const UNFOLLOW = "/auth/UNFOLLOW";
-const SET_STATUS = "/auth/SET_STATUS";
+import { BaseThunkActionType, InferActionsType } from "./redux-store";
+import { Dispatch } from "redux";
+import { authAPI } from "api/auth-api";
+import { profileAPI } from "api/profile-api";
+import { usersAPI } from "api/users-api";
 
 
-// currentUser - ProfileType
+
 const initialState = {
     currentUser: {} as ProfileType,
     isAuth: false,
     isRegistered: false,
 };
 
-
-
-const authReducer = (state = initialState, action: ActionsType) => {
+const authReducer = (state = initialState, action: AuthActionsType) => {
     switch (action.type) {
-        case FOLLOW:
+        case '/auth/FOLLOW':
             return {
                 ...state,
                 currentUser: {
                     ...state.currentUser,
                     following: [...state.currentUser.following, action.userId],
-                }
+                },
             };
-        case UNFOLLOW:
+        case '/auth/UNFOLLOW':
             return {
                 ...state,
                 currentUser: {
@@ -48,25 +38,25 @@ const authReducer = (state = initialState, action: ActionsType) => {
                     ),
                 },
             };
-        case SET_USER:
+        case '/auth/SET_USER':
             return {
                 ...state,
                 currentUser: action.user,
                 isAuth: true,
             };
-        case LOGOUT:
+        case '/auth/LOGOUT':
             localStorage.removeItem("token");
             return {
                 ...state,
                 currentUser: {},
                 isAuth: false,
             };
-        case SET_IS_REGISTERED:
+        case '/auth/SET_REGISTERED':
             return {
                 ...state,
                 isRegistered: action.isRegistered,
             };
-        case SET_STATUS:
+        case '/auth/SET_STATUS':
             return {
                 ...state,
                 currentUser: {
@@ -80,196 +70,141 @@ const authReducer = (state = initialState, action: ActionsType) => {
     }
 };
 
-type SetUserType = ReturnType<typeof setUser>
-export const setUser = (user: ProfileType) => ({
-    type: SET_USER,
-    user,
-} as const);
-type SetLogoutType = ReturnType<typeof setLogout>
-export const setLogout = () => ({
-    type: LOGOUT,
-} as const);
-type SetIsRegisteredType = ReturnType<typeof setIsRegistered>
-export const setIsRegistered = (isRegistered: boolean) => ({
-    type: SET_IS_REGISTERED,
-    isRegistered,
-} as const);
-type FollowSuccessType = ReturnType<typeof followSuccess>
-export const followSuccess = (userId: string) => ({
-    type: FOLLOW,
-    userId,
-} as const);
-type UnfollowSuccessType = ReturnType<typeof unfollowSuccess>
-export const unfollowSuccess = (userId: string) => ({
-    type: UNFOLLOW,
-    userId,
-} as const);
+export const authActions = {
+    setUser: (user: ProfileType) =>
+        ({
+            type: "/auth/SET_USER",
+            user,
+        } as const),
+    setLogout: () =>
+        ({
+            type: "/auth/LOGOUT",
+        } as const),
+    setIsRegistered: (isRegistered: boolean) =>
+        ({
+            type: "/auth/SET_REGISTERED",
+            isRegistered,
+        } as const),
+    followSuccess: (userId: string) =>
+        ({
+            type: "/auth/FOLLOW",
+            userId,
+        } as const),
+    unfollowSuccess: (userId: string) =>
+        ({
+            type: "/auth/UNFOLLOW",
+            userId,
+        } as const),
 
-type SetStatusType = ReturnType<typeof setStatus>
-export const setStatus = (status: string) => ({
-    type: SET_STATUS,
-    status,
-} as const);
-
-export const loginUser = (login: string, password: string) => async (dispatch: any) => {
-    try {
-        const userAuth = await usersAPI.login(login, password);
-
-        if (userAuth.info.resultCode === 0) {
-            dispatch(setUser(userAuth.user));
-            localStorage.setItem("token", userAuth.token);
-        } else {
-            dispatch(stopSubmit("login", { _error: userAuth.message }));
-        }
-    } catch (error) {}
-
-    // usersAPI.login(login, password).then((userAuth) => {
-    //     if(userAuth.info.resultCode === 0) {
-    //         dispatch(setUser(userAuth.user));
-    //         localStorage.setItem("token", userAuth.token);
-    //     }
-    //     else {
-    //         dispatch(stopSubmit('login',{_error: userAuth.message}))
-    //     }
-
-    // });
+    setStatus: (status: string) =>
+        ({
+            type: "/auth/SET_STATUS",
+            status,
+        } as const),
 };
 
-export const userRegistration =
-    (username: string, email: string, password: string): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType | ReturnType<typeof stopSubmit>> => (async (dispatch) => {
+export const loginUser =
+    (
+        login: string,
+        password: string
+    ): BaseThunkActionType<AuthActionsType | ReturnType<typeof stopSubmit>> =>
+    async (dispatch) => {
         try {
-            await dispatch(setIsRegistered(false));
+            const userAuth = await usersAPI.login(login, password);
+
+            if (userAuth.resultCode === ResultCodesEnum.Success) {
+                dispatch(authActions.setUser(userAuth.user));
+                localStorage.setItem("token", userAuth.token);
+            } else {
+                dispatch(stopSubmit("login", { _error: userAuth.message }));
+            }
+        } catch (error) {}
+    };
+
+export const userRegistration =
+    (
+        username: string,
+        email: string,
+        password: string
+    ): BaseThunkActionType<AuthActionsType | ReturnType<typeof stopSubmit>> =>
+    async (dispatch) => {
+        try {
+            await dispatch(authActions.setIsRegistered(false));
             const regObj = await usersAPI.registration(
                 username,
                 email,
                 password
             );
-            if (regObj.info.resultCode === 0) {
-                dispatch(setIsRegistered(true));
+            if (regObj.resultCode === ResultCodesEnum.Success) {
+                dispatch(authActions.setIsRegistered(true));
             } else {
                 dispatch(
                     stopSubmit("registration", { _error: regObj.message })
                 );
             }
         } catch (error) {}
-
-        // dispatch(setIsRegistered(false));
-        // usersAPI.registration(username, email, password).then((regObj) => {
-        //     if (regObj.info.resultCode === 0) {
-        //         dispatch(setIsRegistered(true));
-        //     } else {
-        //         dispatch(stopSubmit("registration", { _error: regObj.message }));
-        //     }
-        // });
-    });
+    };
 
 const followUnfollowFlow = async (
-    dispatch,
-    userId,
-    apiMethod,
-    actionCreator
+    dispatch: Dispatch<AuthActionsType | UsersActionsType> ,
+    userId: string,
+    apiMethod: typeof usersAPI.follow | typeof usersAPI.unfollow,
+    actionCreator: typeof authActions.unfollowSuccess | typeof authActions.followSuccess
 ) => {
     try {
-        await dispatch(setFollowingInProgress(userId));
+        await dispatch(usersActions.setFollowingInProgress(userId));
         const resp = await apiMethod(userId);
-        await dispatch(deleteFollowingInProgress(userId));
+        await dispatch(usersActions.deleteFollowingInProgress(userId));
 
-        if (resp.resultCode === 0) {
+        if (resp.resultCode === ResultCodesEnum.Success) {
             dispatch(actionCreator(userId));
         }
     } catch (error) {}
 };
 
-export const unfollow = (userId: string) => (dispatch: any) => {
+export const unfollow = (userId: string): AuthThunkActionType => async (dispatch) => {
     const apiMethod = usersAPI.unfollow.bind(usersAPI);
-    followUnfollowFlow(dispatch, userId, apiMethod, unfollowSuccess);
-    // try {
-    //     const methodApi = usersAPI.unfollow.bind(usersAPI)
-    //     const actionCreator = unfollowSuccess
-    //     followUnfollowFlow(dispatch, userId, methodApi, actionCreator)
-    //     // await dispatch(setFollowingInProgress(userId));
-    //     // const resp = await usersAPI.unfollow(userId);
-    //     // await dispatch(deleteFollowingInProgress(userId));
-
-    //     // if (resp.resultCode === 0) {
-    //     //     dispatch(unfollowSuccess(userId));
-    //     // }
-    // } catch (error) {}
-
-    // dispatch(setFollowingInProgress(userId));
-    // usersAPI.unfollow(userId).then((resp) => {
-    //     dispatch(deleteFollowingInProgress(userId));
-
-    //     if (resp.resultCode === 0) {
-    //         dispatch(unfollowSuccess(userId));
-    //     }
-    // });
+    followUnfollowFlow(
+        dispatch,
+        userId,
+        apiMethod,
+        authActions.unfollowSuccess
+    );
 };
 
-export const follow = (userId: string) => (dispatch: any) => {
+export const follow = (userId: string): AuthThunkActionType => async (dispatch) => {
     const apiMethod = usersAPI.follow.bind(usersAPI);
-    followUnfollowFlow(dispatch, userId, apiMethod, followSuccess);
-    // try {
-    //     const methodApi = usersAPI.follow.bind(usersAPI)
-    //     const actionCreator = followSuccess
-    //     followUnfollowFlow(dispatch, userId, methodApi, actionCreator)
-    //     // await dispatch(setFollowingInProgress(userId));
-    //     // const resp = await usersAPI.follow(userId);
-    //     // await dispatch(deleteFollowingInProgress(userId));
-
-    //     // if (resp.resultCode === 0) {
-    //     //     dispatch(followSuccess(userId));
-    //     // }
-    // } catch (error) {}
-
-    // dispatch(setFollowingInProgress(userId));
-    // usersAPI.follow(userId).then((resp) => {
-    //     dispatch(deleteFollowingInProgress(userId));
-
-    //     if (resp.resultCode === 0) {
-    //         dispatch(followSuccess(userId));
-    //     }
-    // });
+    followUnfollowFlow(dispatch, userId, apiMethod, authActions.followSuccess);
 };
 
-export const me = async (dispatch: any) => {
+export const me = async (dispatch: Dispatch<AppActionsType | AuthActionsType>) => {
     try {
         const resp = await authAPI.me();
 
-        await dispatch(setUser(resp.user));
-        dispatch(setInitialized());
+        if(resp.resultCode === ResultCodesEnum.Success) {
+            await dispatch(authActions.setUser(resp.user));
+            dispatch(appActions.setInitialized());
+        }
     } catch (error) {
-        dispatch(setInitialized());
-        // console.log(error);
+        dispatch(appActions.setInitialized());
         localStorage.removeItem("token");
     }
 };
 
-export const getStatus = (status: string) => async (dispatch: any) => {
+export const getStatus = (status: string): BaseThunkActionType<AuthActionsType | ProfileActionsType> => async (dispatch) => {
     try {
         const resp = await profileAPI.updateStatus(status);
 
-        if (resp.user.resultCode === 1) {
-            dispatch(setStatus(status));
-            dispatch(setProfileStatus(status));
+        if (resp.resultCode === ResultCodesEnum.Success) {
+            dispatch(authActions.setStatus(status));
+            dispatch(profileActions.setProfileStatus(status));
         }
     } catch (error) {}
-
-    // profileAPI.updateStatus(status).then((resp) => {
-    //     if (resp.user.resultCode === 1) {
-    //         dispatch(setStatus(status));
-    //         dispatch(setProfileStatus(status));
-    //     }
-    // });
 };
 
 export default authReducer;
 
-export type InitialStateType = typeof initialState
-type ActionsType =  SetUserType 
-| SetLogoutType 
-| SetIsRegisteredType 
-| FollowSuccessType
-| UnfollowSuccessType 
-| SetStatusType 
+type AuthThunkActionType = BaseThunkActionType<AuthActionsType>
 
+export type InitialStateType = typeof initialState;
+export type AuthActionsType = InferActionsType<typeof authActions>;

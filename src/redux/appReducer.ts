@@ -1,12 +1,13 @@
-const SET_IS_INITIALIZED = "/app/SET_IS_INITIALIZED";
+import { InferActionsType } from "./redux-store";
+
 
 const initialState = {
     isInitialized: false
 };
 
-const appReducer = (state = initialState, action: ActionsType) => {
+const appReducer = (state = initialState, action: AppActionsType) => {
     switch (action.type) {
-        case SET_IS_INITIALIZED:
+        case '/app/SET_IS_INITIALIZED':
             return {
                 ...state,
                 isInitialized: true
@@ -17,13 +18,13 @@ const appReducer = (state = initialState, action: ActionsType) => {
     }
 };
 
-type setInitializedType = ReturnType<typeof setInitialized>
-export const setInitialized = () => ({
-    type: SET_IS_INITIALIZED,
-} as const);
-
+export const appActions = {
+    setInitialized: () => ({
+        type: "/app/SET_IS_INITIALIZED",
+    } as const)
+}
 
 export default appReducer;
 
 export type InitialStateType = typeof initialState 
-type ActionsType = setInitializedType
+export type AppActionsType = InferActionsType<typeof appActions>

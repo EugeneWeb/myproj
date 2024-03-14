@@ -1,14 +1,13 @@
-import { ProfileType } from 'types/types'
-import s from './ProfileInfo.module.css'
-import ProfileStatus from './ProfileStatus/ProfileStatus'
-import { FC } from 'react'
-
+import { ProfileType } from "types/types";
+import s from "./ProfileInfo.module.css";
+import ProfileStatus from "./ProfileStatus/ProfileStatus";
+import { FC } from "react";
 
 type PropsType = {
-    profile: ProfileType,
-    getStatus: (status: string) => void
-}
-const ProfileInfo: FC<PropsType> = ({profile, getStatus}) => {
+    profile: ProfileType;
+    getStatus: (status: string) => void;
+};
+const ProfileInfo: FC<PropsType> = ({ profile, getStatus }) => {
     return (
         <div>
             <div className={s.bg}>
@@ -23,7 +22,10 @@ const ProfileInfo: FC<PropsType> = ({profile, getStatus}) => {
                 <div className={s.user}>
                     <div className={s.user__name}>{profile.fullname}</div>
 
-                    <ProfileStatus status={profile.status} getStatus={getStatus} />
+                    <ProfileStatus
+                        status={profile.status}
+                        getStatus={getStatus}
+                    />
 
                     <dl>
                         <div className={s.user__item}>
@@ -40,13 +42,21 @@ const ProfileInfo: FC<PropsType> = ({profile, getStatus}) => {
                         </div>
                         <div className={s.user__item}>
                             <dd>Веб-страница:</dd>
-                            <dt><a href={profile.desc.website} rel="noopener noreferrer" target='_blank'>{profile.desc.website}</a></dt>
+                            <dt>
+                                <a
+                                    href={profile.desc.website}
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                >
+                                    {profile.desc.website}
+                                </a>
+                            </dt>
                         </div>
                     </dl>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ProfileInfo
+export default ProfileInfo;

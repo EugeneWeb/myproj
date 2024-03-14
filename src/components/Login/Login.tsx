@@ -4,8 +4,13 @@ import formControlStyles from "../common/FormControls/FormControls.module.css";
 import { useNavigate } from "react-router-dom";
 import { maxLength, required } from "../../utils/validators";
 import { Input } from "../common/FormControls/FormControls";
+import { FC } from "react";
 
-export default function Login({login}) {
+
+type LoginPropsType = {
+    login: (login: string, password: string) => void
+}
+const Login: FC<LoginPropsType> = ({login}) => {
     const navigate = useNavigate();
 
     const onSubmit = (formData) => {
@@ -19,6 +24,13 @@ export default function Login({login}) {
         </div>
     );
 }
+export default Login
+
+type LoginFormValuesType = {
+    login: string,
+    password: string
+}
+type LoginFormOwnPropsType = {}
 
 const LoginForm = ({handleSubmit, error}) => {
     

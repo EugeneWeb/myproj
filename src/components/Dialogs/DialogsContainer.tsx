@@ -1,7 +1,7 @@
 // import StoreContext from "../../StoreContext";
 import { connect } from "react-redux";
 import {
-    sendMessage
+    dialogsActions
 } from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
@@ -22,6 +22,6 @@ type MapDispatchPropsType = {}
 type OwnPropsType = {}
 
 export default compose<React.ComponentType>(
-    connect<MapDispatchPropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, { sendMessage }),
+    connect<MapDispatchPropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, { sendMessage: dialogsActions.sendMessage }),
     withAuthRedirect
 )(Dialogs);

@@ -3,7 +3,7 @@ import WithRouter from '../common/WithRouter/WithRouter'
 import { connect } from 'react-redux'
 import Profile from './Profile'
 import { requestProfile } from '../../redux/users-reducer'
-import { setUsersProfile } from '../../redux/profile-reducer'
+import { profileActions } from '../../redux/profile-reducer'
 import withAuthRedirect from '../../hoc/withAuthRedirect'
 import { compose } from 'redux'
 import { getStatus } from '../../redux/authReducer'
@@ -54,7 +54,10 @@ const mapStateToProps = (state: AppStateType) => ({
     currentUser: getCurrentUser(state)
 })
 
-const MDTP = { requestProfile, setUsersProfile, getStatus }
+const MDTP = { 
+    requestProfile, 
+    setUsersProfile: profileActions.setUsersProfile, 
+    getStatus }
 
 export default compose<React.ComponentType>(
     connect(mapStateToProps, MDTP),

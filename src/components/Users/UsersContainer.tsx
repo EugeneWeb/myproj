@@ -1,11 +1,6 @@
 import { connect } from "react-redux";
 import {
-    setCurrentPage,
-    setIsFetching,
-    setUsers,
-    setUsersTotalCount,
-    setFollowingInProgress,
-    deleteFollowingInProgress,
+    usersActions,
     requestUsers,
 } from "../../redux/users-reducer";
 import Users from "./Users";
@@ -13,10 +8,7 @@ import * as React from 'react';
 import Preloader from "../common/Preloader/Preloader";
 import s from "./UsersContainer.module.css";
 import {
-    followSuccess,
-    unfollowSuccess,
-    follow,
-    unfollow,
+    authActions, follow, unfollow
 } from "../../redux/authReducer";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
@@ -96,14 +88,14 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 };
 
 const MDTP = {
-    followSuccess,
-    unfollowSuccess,
-    setUsers,
-    setUsersTotalCount,
-    setCurrentPage,
-    setIsFetching,
-    setFollowingInProgress,
-    deleteFollowingInProgress,
+    followSuccess: authActions.followSuccess,
+    unfollowSuccess: authActions.unfollowSuccess,
+    setUsers: usersActions.setUsers,
+    setUsersTotalCount: usersActions.setUsersTotalCount,
+    setCurrentPage: usersActions.setCurrentPage,
+    setIsFetching: usersActions.setIsFetching,
+    setFollowingInProgress: usersActions.setFollowingInProgress,
+    deleteFollowingInProgress: usersActions.deleteFollowingInProgress,
     requestUsers,
     follow,
     unfollow,

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Header from './Header'
-import {setLogout} from '../../redux/authReducer'
+import {authActions} from '../../redux/authReducer'
 import { getCurrentUser, getIsAuth } from '../../redux/auth-selectors'
 import { AppStateType } from '@redux/redux-store'
 
@@ -15,5 +15,5 @@ type OwnPropsType = {
     notAuthClassName: string
 }
 
-const MDTP = {setLogout}
+const MDTP = {setLogout: authActions.setLogout}
 export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, MDTP)(Header)

@@ -29,3 +29,9 @@ export type FriendType = {
     name: string;
     path: string;
 };
+
+export type ApiItemsType<ObjType> = {
+    items: ObjType[]
+    totalCount: number
+    resultCode: number
+}

@@ -27,55 +27,90 @@ const UsersContainer = React.lazy(() =>
     import("./components/Users/UsersContainer")
 );
 
-// Типизация connect(контейнерных компонент), как посмотреть принимаемые джененериком типы
-// Как исправить проблему с импортом React(2 способа)
-// Типизация compose
-// Типизация хуков
-// Как узнать тип любой переменной(на примере возвращаемого значения useParams)
-// Как легко задать тип для e(event)
-// Типизация LoginContainer и RegistrationContainer, ПОДВОХ
+// Как мы исправили типизация action creator'ов, как типизировать thunk creator'ы(2), что по умолчанию возвращает ассинхронная функция, как самостоятельно гуглить типизацию, как типизировать API, для чего и как используем enum, 
+// Можно ли объявлять типы до объявления переменных?
+// Типизация dispatch с stopSubmit
+// в каком порядке типизируем
+// какой тип используем для файла
+// Куда выносим типы 
+// Важно про дженерики и ResultCode
+// Объединение enum
+// Типизация констант
 
 
 
 
-// Типизация connect(контейнерных компонент)
-// Для этого разбиваем PropsType на MapStatePropsType, MapDispatchPropsType, OwnPropsType
-// т.е на пропсы, которые пришли из MSTP, MDTP и на OwnPropsType, которые получает компонента через атрибуты(<Component users={users} />)
-// Далее пишем
-// connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>()()
-// т.е connect - дженерик
 
-// как посмотреть принимаемые джененериком типы
-// Просто нажимаем ctrl+click и смотрим(например, для connect)
 
-// Как исправить проблему с импортом React(2 способа)
-// Для этого используем след. синтаксис:
-// import * as React from 'react'; - лучше этот
-// Или добавляем в tsconfig:
-//"esModuleInterop": true
+// Как мы исправили типизация action creator'ов
+// С помощью условного типа, который пробегает по всем свойствам объекта actions и возвращает union type из типов всех объектов, возвращаемых из action creator'ов
+// InferActionsType<T extends { [propname: string]: (...args: any) => any}> = T extends { [propname: string]: (...args: any) => infer U} ? U: never
 
-// Типизация compose
-// compose<React.ComponentType>(
-//     connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, MDTP),
-//     withAuthRedirect
-// )(UsersContainer)
+// как типизировать thunk creator'ы(2)
+// 1 способ в лоб, задавая тип getState и dispatch
+// type GetStateType = () => AppStateType
+// а для dispatch через тип redux'а Dispatch<типы всех action'ов> 
+// Пример:
+// type GetAppState = () => AppStateType; - общий тип для getState
+// export const requestUsers =
+//     (perPage: number, currentPage: number) =>
+//     async (dispatch: Dispatch<ActionsType>, getState: GetAppState) => {
+//         try {
+//             await dispatch(usersActions.setIsFetching(true));
+//             const resp = await usersAPI.getUsers(perPage, currentPage);
+//             await dispatch(usersActions.setIsFetching(false));
 
-// Типизация хуков
-// Как правило, все хуки являются дженерик функциями, поэтому можем писать принимаемый тип так(при этом если указываем начальное значение, то типизировать необязательно):
-// useState(1)
-// useState<number | null>(null)
+//             dispatch(usersActions.setCurrentPage(currentPage));
+//             dispatch(usersActions.setUsers(resp.users));
+//             dispatch(usersActions.setUsersTotalCount(resp.totalCount));
+//         } catch (error) {}
+//     };
 
-// Как узнать тип любой переменной(на примере возвращаемого значения useParams)
-// Просто объявляем переменную любого типа, например, number(заведомо зная, что это неправильный тип) и смотрим ошибку, в которой написан правильный тип:
-// const n: number = useParams()
-// Узнали тип:
-// params: Readonly<Params<string>>
+// 2 способ через ThunkAction<>, что по умолчанию возвращает ассинхронная функция
+// Тогда создаём обобщенный тип для упрощения написания типа:
+// type BaseThunkActionType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
+// Где R - ReturnType - возвращаемый Thunk'ом тип
+// A - тип action'ов, которые принимает dispatch
+// по умолчанию ассинхронная функция возвращает Promise<void>
 
-// Как легко задать тип для e(event)
-// Также как и с useParams, просто объявляем неправильный тип для e
+// как самостоятельно гуглить типизацию
+// redux-form typescript example
 
-// Типизация LoginContainer и RegistrationContainer, ПОДВОХ
-// Подвох заключается в типах ThunkCreator функкциях: userRegistration и loginUser, которые возвращают void(если писать, что возвращают ThunkAction или Promise<void> - ошибка)
+// как типизировать API, для чего и как используем enum
+// все функции axios являются дженериками: axios.get<> и т.д, в угловых скобках мы задаём тип resp.data
+// Разделяем файл api на отдельные файлы: api.ts, где находятся общие типы и для resultCodes пишем enum для того, чтобы избавиться от магических чисел, при этом ВАЖНО!!! в type добавляем сам EnumName, а не typeof EnumName, иначе ts будет просить именно сам enum, а не значения его свойств
+// все типы уносим вниз api
+
+// Типизация dispatch с stopSubmit
+// для этого к ActionsType добавляем:
+// | ReturnType<typeof stopSubmit> - но тогда тоже не совсем правильно, так как возвращаемый тип экстендиться от типа Action и получим то, что в dispatch можно передавать в качестве аргумента любые action'ы
+
+// в каком порядке типизируем
+// DAL(api)
+// BLL(Container components)
+// UI(Presentational components)
+
+// Можно ли объявлять типы до объявления переменных?
+// Да, ts компилятор такое позволяет
+
+// какой тип используем для файла
+// :File
+
+// Куда выносим типы 
+// В самый низ
+
+// Важно про дженерики и ResultCode
+// Если при типизации Api у нас возникает проблема, связанная с тем, что тип enum'ов отличается, то делаем дженерик, в котором resultCode: RC
+
+// Объединение enum
+// Для этого используем &
+// resultCode: Enum1 & Enum2
+
+
+// Типизация констант
+// Константы с типами action'ов можно убрать, так как ts сам подсказывает эти типы
+
+
 
 function App(props) {
     const dispatch = useDispatch();
